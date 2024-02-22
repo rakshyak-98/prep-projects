@@ -21,21 +21,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useQuickMenuData} from "@/hooks/menu"
 
-export function DropdownMenu() {
+export function DropdownMenu({name}: {name: "open" | "create"}) {
     useQuickMenuData();
     return (
         <_DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline">Open</Button>
+                <Button variant="outline">{name}</Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
-                <DropdownMenuLabel>Quick Create</DropdownMenuLabel>
+                <DropdownMenuLabel>Quick {name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger>
                             <Plus className="mr-2 h-4 w-4" />
-                            <span>Add expense</span>
+                            <span>{name} expense</span>
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
@@ -59,7 +59,7 @@ export function DropdownMenu() {
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger>
                             <Plus className="mr-2 h-4 w-4" />
-                            <span>Add expense</span>
+                            <span>{name} expense</span>
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>

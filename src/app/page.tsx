@@ -1,7 +1,12 @@
+"use client"
 import { DropdownMenu } from "@/app/_components/dropdown";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button"
 import { ThemeProvider } from "@/providers/themeProviders";
-import {ToastContainer} from "react-toastify"
+import {toast} from "react-toastify"
+import { PlusCircle} from "lucide-react";
+
+
 export default function Home() {
     return (
         <ThemeProvider
@@ -10,13 +15,18 @@ export default function Home() {
             enableSystem
             disableTransitionOnChange
         >
-            <ToastContainer />
             <Card className="w-[450px]">
-                <CardHeader>
+                <CardHeader className="flex justify-between flex-row">
                     <CardTitle>One place to record Expense</CardTitle>
+                    <Button onClick={() => {
+                        toast.success("click")
+                    }}><PlusCircle /></Button>
                 </CardHeader>
                 <CardContent className="flex justify-between">
-                    <DropdownMenu></DropdownMenu>
+                    <div className="flex gap-2">
+                        <DropdownMenu name="open"></DropdownMenu>
+                        <DropdownMenu name="create"></DropdownMenu>
+                    </div>
                     <div>
                         <div className="money">You have</div>
                         <span>400</span>
@@ -26,3 +36,4 @@ export default function Home() {
         </ThemeProvider>
     );
 }
+

@@ -17,6 +17,11 @@ npm run dev
 npm run start 
 ```
 
+```bash
+npm run create-prisma
+npm run migrate
+```
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
@@ -33,5 +38,7 @@ To learn more about Next.js, take a look at the following resources:
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
 ## Reference
+- [prisma connection urls](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/connect-your-database-typescript-postgresql)
 ### Errors Found when creating project
 - [Warning: Extra attributes from the server: class,style]()
+- [TypeError: Unknown file extension ".ts" for /home/rakshyak/GitHub/personal/expense-tracker/src/client/dbClient.ts]()
