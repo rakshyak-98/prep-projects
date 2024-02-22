@@ -19,7 +19,7 @@ body {
     min-height: 100vh;
     width: 100%;
     background-color: #EFEAE3;
-    position: absolute;
+    position: relative;
     padding: 0 2vw;
 }
 
@@ -86,7 +86,7 @@ nav h3 {
     width: 100%;
     height: 65vh;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     border-bottom: 1px solid #0000003c;
     padding-bottom: 2.5vw;
@@ -98,9 +98,16 @@ nav h3 {
     line-height: 2vw;
 }
 
+#center h1 {
+    font-size: 10vw;
+    text-align: right;
+    margin-top: 4vw;
+    width: 100%;
+}
+
 #page1 video {
-    position: relative;
-    border-radius: 30px;
+    position: relative; */
+    der-radius: 30px;
     margin-top: 4vw;
     width: 100%;
 }
@@ -164,7 +171,7 @@ nav h3 {
     width: 100%;
     background-color: #EFEAE3;
     padding: 8vw 0;
-    /* position: relative; */
+    position: relative;
 }
 
 .moving-text {
@@ -182,7 +189,24 @@ nav h3 {
     animation: move 10s linear infinite;
 }
 
-.moving-text h1 {
+.moving-text h2 {
     font-size: 9vw;
     display: inline-block;
+}
+
+@keyframes move {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+.circle-shape {
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 1vw 2vw;
+    background-color: #FE320A;
 }
