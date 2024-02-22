@@ -21,8 +21,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useQuickMenuData} from "@/hooks/menu"
 
-export function DropdownMenu({name}: {name: "open" | "create"}) {
-    useQuickMenuData();
+
+export function DropdownMenu({name, setDrawer}: {name: "open" | "create", setDrawer: any}) {
     return (
         <_DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -40,11 +40,10 @@ export function DropdownMenu({name}: {name: "open" | "create"}) {
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
                                 <DropdownMenuItem>
-                                    <span>Grocery</span>
+                                    <span onClick={() => {setDrawer(true)}}>Grocery</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <MessageSquare className="mr-2 h-4 w-4" />
-                                    <span>Home</span>
+                                    <span>House</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>
@@ -59,16 +58,15 @@ export function DropdownMenu({name}: {name: "open" | "create"}) {
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger>
                             <Plus className="mr-2 h-4 w-4" />
-                            <span>{name} expense</span>
+                            <span>{name} income</span>
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
                                 <DropdownMenuItem>
-                                    <span>Grocery</span>
+                                    <span>Salary</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
-                                    <MessageSquare className="mr-2 h-4 w-4" />
-                                    <span>Home</span>
+                                    <span>Misc</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>
@@ -83,6 +81,3 @@ export function DropdownMenu({name}: {name: "open" | "create"}) {
         </_DropdownMenu>
     );
 }
-
-
-
