@@ -6,6 +6,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 1. [Prisma](https://www.npmjs.com/package/prisma) (Database)
 1. [npm-run-all](https://www.npmjs.com/package/npm-run-all) (process manager) 
 
+## Feature
+1. Create expense category
+
 ## Getting Started
 
 ```bash

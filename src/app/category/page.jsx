@@ -1,4 +1,4 @@
-import Expense from "./_components/Expense";
+import Expense from "./_components/expense";
 
 export default function ExpensePage(){
  return <Expense />

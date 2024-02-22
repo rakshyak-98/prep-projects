@@ -1,0 +1,9 @@
+{
+    "printWidth": 100,
+    "proseWrap": "preserve",
+    "arrowParens": "always",
+    "semi": true,
+    "tabWidth": 4,
+    "singleAttributePerLine": true,
+    "endOfLine": "crlf",
+}
