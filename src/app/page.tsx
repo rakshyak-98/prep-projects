@@ -1,12 +1,11 @@
-"use client";
 import { DropdownMenu } from "@/app/_components/dropdown";
-import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card"
-import {ThemeProvider} from "@/providers/themeProviders"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ThemeProvider } from "@/providers/themeProviders";
 export default function Home() {
     return (
         <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
         >
@@ -21,3 +20,12 @@ export default function Home() {
         </ThemeProvider>
     );
 }
+
+
+
+
+
+
+
+
+
