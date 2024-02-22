@@ -1,6 +1,7 @@
 import { DropdownMenu } from "@/app/_components/dropdown";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ThemeProvider } from "@/providers/themeProviders";
+import {ToastContainer} from "react-toastify"
 export default function Home() {
     return (
         <ThemeProvider
@@ -9,6 +10,7 @@ export default function Home() {
             enableSystem
             disableTransitionOnChange
         >
+            <ToastContainer />
             <Card className="w-[450px]">
                 <CardHeader>
                     <CardTitle>One place to record Expense</CardTitle>

@@ -1,14 +1,8 @@
+"use client"
 import {
-    Cloud,
-    CreditCard,
-    Keyboard,
-    LifeBuoy,
-    LogOut,
-    Mail,
     MessageSquare,
     Plus,
     PlusCircle,
-    UserPlus,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -20,14 +14,15 @@ import {
     DropdownMenuLabel,
     DropdownMenuPortal,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuSub,
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useQuickMenuData} from "@/hooks/menu"
 
 export function DropdownMenu() {
+    useQuickMenuData();
     return (
         <_DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -45,7 +40,6 @@ export function DropdownMenu() {
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
                                 <DropdownMenuItem>
-                                    <Mail className="mr-2 h-4 w-4" />
                                     <span>Grocery</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
@@ -70,7 +64,6 @@ export function DropdownMenu() {
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
                                 <DropdownMenuItem>
-                                    <Mail className="mr-2 h-4 w-4" />
                                     <span>Grocery</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
