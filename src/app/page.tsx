@@ -13,8 +13,12 @@ export default function Home() {
                 <CardHeader>
                     <CardTitle>One place to record Expense</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex justify-between">
                     <DropdownMenu></DropdownMenu>
+                    <div>
+                        <div className="money">You have</div>
+                        <span>400</span>
+                    </div>
                 </CardContent>
             </Card>
         </ThemeProvider>
