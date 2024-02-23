@@ -319,7 +319,7 @@ nav h3 {
     background-position: center;
 }
 
-/* .page4 {
+.page4 {
     height: 70vh;
     width: 100%;
     background-color: #EFEAE3;
@@ -343,7 +343,6 @@ nav h3 {
 }
 
 footer {
-    position: fixed;
     bottom: 0;
     height: 105vh;
     width: 100%;
@@ -576,4 +575,14 @@ footer h1 {
     .loader h1 {
         font-size: 9vw;
     }
-} */
+}
+
+.showcase {
+    padding: 40px;
+    overflow: hidden;
+}
+
+.showcase img {
+    display: flex;
+    width: 100%;
+}
