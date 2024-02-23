@@ -99,7 +99,7 @@ nav h3 {
 }
 
 #center h1 {
-    font-size: clamp(32px, 10vw, 160px);
+    font-size: clamp(32px, 10vw, 140px);
     text-align: right;
     margin-top: 4vw;
     width: 100%;
@@ -263,5 +263,74 @@ nav h3 {
         filter: blur(30px);
         transform: translate(-10%, 10%) skew(-12deg);
     }
+}
+
+.page3 {
+    min-height: 100vh;
+    width: 100%;
+    background-color: #EFEAE3;    
+    padding: 4vw 0;
+}
+
+.elem {
+    height: 150px;
+    width: 100%;
+    position: relative;
+    border-bottom: 1px solid #38383864;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    padding: 0 2vw;
+}
+
+.elem h2 {
+    font-size: 3vw;
+    position: relative;
+    z-index: 9;
+    cursor: pointer;
+}
+
+.elem .overlay {
+    height: 100%;
+    width: 100;
+    background-color: orange;
+    position: absolute;
+    left: 0;
+    top: -100%;
+    transition: all ease 0.25s;
+}
+
+.elem:hover .overlay{
+    top: 0;
+}
+
+.fixed-image {
+    height: 30vw;
+    width: 24vw;
+    border-radius: 15px;
+    z-index: 99;
+    left: 50%;
+    top: 25%;
+    position: fixed;
+    background-size: cover;
+    background-position: center;
+}
+
+.page4 {
+    height: 70vh;
+    width: 100%;
+    background-color: #EFEAE3;
+    padding: 10vw 2vw;
+}
+
+.swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.swiper-slide {
+    width: 30%;
+    border-left: 1px solid #AEADAD;
+    padding: 0 2vw;
 }
 
