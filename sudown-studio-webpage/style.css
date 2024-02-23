@@ -106,8 +106,8 @@ nav h3 {
 }
 
 #page1 video {
-    position: relative; */
-    der-radius: 30px;
+    position: relative;
+    border-radius: 30px;
     margin-top: 4vw;
     width: 100%;
 }
