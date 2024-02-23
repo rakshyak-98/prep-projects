@@ -89,17 +89,17 @@ nav h3 {
     align-items: flex-end;
     justify-content: space-between;
     border-bottom: 1px solid #0000003c;
-    padding-bottom: 9.5vw;
+    padding-bottom: 4.5vw;
 }
 
 #left h3 {
-    width: 25vw;
-    font-size: 1.8vw;
-    line-height: 2vw;
+    width: 20vw;
+    font-size: 1.2vw;
+    line-height: 1.4vw;
 }
 
 #center h1 {
-    font-size: clamp(32px, 10vw, 140px);
+    font-size: clamp(32px, 10vw, 150px);
     text-align: right;
     margin-top: 4vw;
     width: 100%;
@@ -126,7 +126,7 @@ nav h3 {
     width: 100%;
     border-top-left-radius: 50%;
     border-bottom-left-radius: 50%;
-    filter: blur(50px);
+    filter: blur(30px);
     position: absolute;
 }
 
@@ -135,8 +135,7 @@ nav h3 {
     height: 30vw;
     border-radius: 50%;
     position: absolute;
-    filter: blur(50px);
-    box-shadow: 10px 20px 10px #FE230A;
+    filter: blur(30px);
     background-image: linear-gradient(#FE230A, #FE3F0A);
 }
 
@@ -152,10 +151,10 @@ nav h3 {
 
 @keyframes anime2{
     from {
-        transform: translate(25%, 0);
+        transform: translate(25%, 10%);
     }
     to {
-        transform: translate(-10%, 0);
+        transform: translate(-10%, -3%);
     }
 }
 
@@ -252,18 +251,20 @@ nav h3 {
     background-image: linear-gradient(to top right, #FF2D02, #FF5C0B);
     top: 58%;
     left: 25%;
-    filter: blur(20px);
-    animation: gooey 6s infinite alternate ease-in-out;
+    filter: blur(50px);
+    animation: bg-moving-circle-animation 6s infinite alternate ease-in-out;
 }
 
-@keyframes gooey {
+@keyframes bg-moving-circle-animation {
     from {
         filter: blur(20px);
         transform: translate(10%, -10%) skew(0);
+        box-shadow: 10px 10px 50px #FF5C0B;
     }
     to {
-        filter: blur(30px);
+        filter: blur(40px);
         transform: translate(-10%, 10%) skew(-12deg);
+        box-shadow: 10px 10px 50px #FF5C0B;
     }
 }
 
@@ -283,18 +284,18 @@ nav h3 {
     display: flex;
     align-items: center;
     padding: 0 2vw;
+    cursor: pointer;
 }
 
 .elem h2 {
     font-size: 3vw;
     position: relative;
     z-index: 9;
-    cursor: pointer;
 }
 
 .elem .overlay {
     height: 100%;
-    width: 100;
+    width: 100%;
     background-color: orange;
     position: absolute;
     left: 0;
@@ -318,7 +319,7 @@ nav h3 {
     background-position: center;
 }
 
-.page4 {
+/* .page4 {
     height: 70vh;
     width: 100%;
     background-color: #EFEAE3;
@@ -575,4 +576,4 @@ footer h1 {
     .loader h1 {
         font-size: 9vw;
     }
-}
+} */
