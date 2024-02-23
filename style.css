@@ -210,3 +210,58 @@ nav h3 {
     margin: 1vw 2vw;
     background-color: #FE320A;
 }
+.page2-bottom{
+    height: 80vh;
+    width: 100%;
+    padding: 4.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 9;
+}
+
+.page2-bottom h2 {
+    font-size: 5vw;
+    width:  60%;
+    line-height: 4.8vw;
+}
+
+.bottom-part2 {
+    width: 20%;
+}
+
+.bottom-part2 img{
+    width: 100%;
+    border-radius: 15px;
+}
+
+.bottom-part2 p {
+    font-weight: 200;
+    margin-top: 2vw;
+    font-size: 1.2vw;
+}
+
+.page2 .bg-moving-circle {
+    height: 42vw;
+    width: 42vw;
+    position: absolute;
+    border-radius: 50%;
+    background-image: linear-gradient(to top right, #FF2D02, #FF5C0B);
+    top: 58%;
+    left: 25%;
+    filter: blur(20px);
+    animation: gooey 6s infinite alternate ease-in-out;
+}
+
+@keyframes gooey {
+    from {
+        filter: blur(20px);
+        transform: translate(10%, -10%) skew(0);
+    }
+    to {
+        filter: blur(30px);
+        transform: translate(-10%, 10%) skew(-12deg);
+    }
+}
+
