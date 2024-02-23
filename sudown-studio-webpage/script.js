@@ -25,10 +25,10 @@ function swiperAnimation() {
     });
 }
 
-new LocomotiveScroll({
-    el: document.querySelector('#main'),
-    smooth: true
-});
+// new LocomotiveScroll({
+//     el: document.querySelector('#main'),
+//     smooth: true
+// });
 
 swiperAnimation();
 page4Animation();
