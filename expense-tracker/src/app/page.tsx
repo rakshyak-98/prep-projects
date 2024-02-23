@@ -8,7 +8,6 @@ import { PlusCircle} from "lucide-react";
 import {Drawer} from "@/app/_components/drawer"
 import { useState } from "react";
 
-
 export default function Home() {
     const [openDrawer, setDrawer] = useState(false);
     return (
