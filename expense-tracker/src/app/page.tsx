@@ -10,6 +10,10 @@ import { useState } from "react";
 
 export default function Home() {
     const [openDrawer, setDrawer] = useState(false);
+    const [whichDrawer, setWhichDrawer] = useState("")
+    function handleWhichDrawer(name: "create" | "open"){
+        setWhichDrawer(name);
+    }
     return (
         <ThemeProvider
             attribute="class"
@@ -45,7 +49,7 @@ export default function Home() {
                     </div>
                 </CardContent>
             </Card>
-            <Drawer open={openDrawer} setDrawer={setDrawer}/>
+            <Drawer open={openDrawer} setDrawer={setDrawer} name=""/>
         </ThemeProvider>
     );
 }

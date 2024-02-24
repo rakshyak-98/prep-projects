@@ -1,9 +1,5 @@
-"use client"
-import {
-    MessageSquare,
-    Plus,
-    PlusCircle,
-} from "lucide-react";
+"use client";
+import { MessageSquare, Plus, PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,10 +15,17 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useQuickMenuData} from "@/hooks/menu"
+import { useQuickMenuData } from "@/hooks/menu";
 
-
-export function DropdownMenu({name, setDrawer}: {name: "open" | "create", setDrawer: any}) {
+export function DropdownMenu({
+    name,
+    setDrawer,
+    callback,
+}: {
+    name: "open" | "create";
+    setDrawer: any;
+    callback?: Function;
+}) {
     return (
         <_DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -40,7 +43,13 @@ export function DropdownMenu({name, setDrawer}: {name: "open" | "create", setDra
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
                                 <DropdownMenuItem>
-                                    <span onClick={() => {setDrawer(true)}}>Grocery</span>
+                                    <span
+                                        onClick={() => {
+                                            setDrawer(true);
+                                        }}
+                                    >
+                                        Grocery
+                                    </span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
                                     <span>House</span>
@@ -81,3 +90,4 @@ export function DropdownMenu({name, setDrawer}: {name: "open" | "create", setDra
         </_DropdownMenu>
     );
 }
+
