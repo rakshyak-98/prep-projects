@@ -37,10 +37,12 @@ export default function Home() {
                         <DropdownMenu
                             name="open"
                             setDrawer={setDrawer}
+                            callback={handleWhichDrawer}
                         ></DropdownMenu>
                         <DropdownMenu
                             name="create"
                             setDrawer={setDrawer}
+                            callback={handleWhichDrawer}
                         ></DropdownMenu>
                     </div>
                     <div>
@@ -49,7 +51,7 @@ export default function Home() {
                     </div>
                 </CardContent>
             </Card>
-            <Drawer open={openDrawer} setDrawer={setDrawer} name=""/>
+            <Drawer open={openDrawer} setDrawer={setDrawer} name={whichDrawer}/>
         </ThemeProvider>
     );
 }

@@ -15,12 +15,12 @@ import {
     DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useQuickMenuData } from "@/hooks/menu";
+import { useEffect } from "react";
 
 export function DropdownMenu({
     name,
     setDrawer,
-    callback,
+    callback = (name: string) => {},
 }: {
     name: "open" | "create";
     setDrawer: any;
@@ -46,6 +46,7 @@ export function DropdownMenu({
                                     <span
                                         onClick={() => {
                                             setDrawer(true);
+                                            callback(name);
                                         }}
                                     >
                                         Grocery

@@ -26,10 +26,12 @@ export const Drawer = ({
         if (name == "create") {
             setHeading("GO For it Bro")
             setState("Create a new expense plan");
+            setView(1);
         }
         if (name == "open") {
             setHeading("Here it is")
             setState("Did you find what and where gone wrong.");
+            setView(0);
         }
     }, [name]);
     return (
@@ -43,7 +45,7 @@ export const Drawer = ({
                     <DrawerDescription>{text}</DrawerDescription>
                 </DrawerHeader>
                 <DrawerFooter>
-                    {view ? <DataTableDemo /> : <ExpenseForm />}
+                    {view ? <ExpenseForm /> : <DataTableDemo />}
                 </DrawerFooter>
             </DrawerContent>
         </_Drawer>
