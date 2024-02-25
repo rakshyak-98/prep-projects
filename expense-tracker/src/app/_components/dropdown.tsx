@@ -38,7 +38,7 @@ export function DropdownMenu({
                     <DropdownMenuSub>
                         <DropdownMenuSubTrigger>
                             <Plus className="mr-2 h-4 w-4" />
-                            <span>{name} expense</span>
+                            <span>{name} category</span>
                         </DropdownMenuSubTrigger>
                         <DropdownMenuPortal>
                             <DropdownMenuSubContent>
@@ -58,7 +58,14 @@ export function DropdownMenu({
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>
                                     <PlusCircle className="mr-2 h-4 w-4" />
-                                    <span>More...</span>
+                                    <span
+                                        onClick={() => {
+                                            setDrawer(true);
+                                            callback(name);
+                                        }}
+                                    >
+                                        More...
+                                    </span>
                                 </DropdownMenuItem>
                             </DropdownMenuSubContent>
                         </DropdownMenuPortal>

@@ -8,7 +8,7 @@ import {
     DrawerFooter,
 } from "@/components/ui/drawer";
 import { DataTableDemo } from "@/app/_components/table";
-import {ExpenseForm} from "@/app/_components/expenseForm"
+import {CreateCategory} from "@/app/_components/expenseForm"
 
 export const Drawer = ({
     open,
@@ -45,7 +45,7 @@ export const Drawer = ({
                     <DrawerDescription>{text}</DrawerDescription>
                 </DrawerHeader>
                 <DrawerFooter>
-                    {view ? <ExpenseForm /> : <DataTableDemo />}
+                    {view ? <CreateCategory /> : <DataTableDemo />}
                 </DrawerFooter>
             </DrawerContent>
         </_Drawer>
