@@ -1,18 +1,22 @@
 import { PlusCircle } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { toast } from '@/lib/utils';
+import { DatePicker } from '@/app/_components/datepicker';
 
 export const CreateCategory = () => {
     const inputRef = useRef<HTMLInputElement>(null);
-    function create(data: any) {
-    }
+    function create(data: any) {}
     return (
-        <div className="flex gap-2 items-center">
+        <div className="flex flex-col gap-2 items-center">
+            <input
+                type="number"
+                placeholder="Enter amount"
+            />
             <input
                 ref={inputRef}
                 className="p-2 rounded-sm"
                 type="text"
-                placeholder="Enter category name here"
+                placeholder="Enter category name"
             />
             <PlusCircle
                 onClick={() => {

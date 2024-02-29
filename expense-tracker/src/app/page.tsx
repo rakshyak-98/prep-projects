@@ -7,6 +7,7 @@ import { toast } from "@/lib/utils";
 import { PlusCircle } from "lucide-react";
 import { Drawer } from "@/app/_components/drawer";
 import { useState } from "react";
+import {DatePicker} from "@/app/_components/datepicker"
 
 export default function Home() {
     const [openDrawer, setDrawer] = useState(false);
@@ -21,14 +22,15 @@ export default function Home() {
             enableSystem
             disableTransitionOnChange
         >
-            <Card className="w-[450px]">
+            <Card className="w-max">
                 <CardHeader className="flex justify-between flex-row">
                     <CardTitle>One place to record Expense</CardTitle>
                     <PlusCircle
                         onClick={() => toast().success("todo: add more money to expense")}
                     />
                 </CardHeader>
-                <CardContent className="flex justify-between">
+                <CardContent className="flex justify-between gap-2">
+                    <DatePicker />
                     <div className="flex gap-2">
                         <DropdownMenu
                             name="open"
