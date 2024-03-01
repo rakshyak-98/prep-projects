@@ -1,20 +1,16 @@
-"use client";
-import { DropdownMenu } from "@/app/_components/dropdown";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ThemeProvider } from "@/providers/themeProviders";
-import { toast } from "@/lib/utils";
-import { PlusCircle } from "lucide-react";
-import { Drawer } from "@/app/_components/drawer";
-import { useState } from "react";
-import {DatePicker} from "@/app/_components/datepicker"
+'use client';
+import { useState } from 'react';
+import { DropdownMenu } from '@/app/_components/dropdown';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { ThemeProvider } from '@/providers/themeProviders';
+import { Drawer } from '@/app/_components/drawer';
+import { ReceiptText } from 'lucide-react';
+import { DatePicker } from '@/app/_components/datepicker';
+import { Tooltip } from '@/app/_components/tooltip';
+import { Dialog } from '@/app/_components/dialog';
 
 export default function Home() {
     const [openDrawer, setDrawer] = useState(false);
-    const [whichDrawer, setWhichDrawer] = useState("");
-    function handleWhichDrawer(name: "create" | "open") {
-        setWhichDrawer(name);
-    }
     return (
         <ThemeProvider
             attribute="class"
@@ -25,34 +21,33 @@ export default function Home() {
             <Card className="w-max">
                 <CardHeader className="flex justify-between flex-row">
                     <CardTitle>One place to record Expense</CardTitle>
-                    <PlusCircle
-                        onClick={() => toast().success("todo: add more money to expense")}
-                    />
+                    <Tooltip text="Click to view your transactions">
+                        <ReceiptText
+                            className="cursor-pointer"
+                            onClick={() => {
+                                setDrawer(true);
+                            }}
+                        />
+                    </Tooltip>
                 </CardHeader>
                 <CardContent className="flex justify-between gap-2">
                     <DatePicker />
-                    <div className="flex gap-2">
-                        <DropdownMenu
-                            name="open"
-                            setDrawer={setDrawer}
-                            callback={handleWhichDrawer}
-                        ></DropdownMenu>
-                        <DropdownMenu
-                            name="create"
-                            setDrawer={setDrawer}
-                            callback={handleWhichDrawer}
-                        ></DropdownMenu>
+                    <Dialog />
+                </CardContent>
+                <CardFooter className="justify-between">
+                    <div className="text-green-400">
+                        <div className="money">total money in</div>
+                        <span>1000</span>
                     </div>
-                    <div>
-                        <div className="money">You have</div>
+                    <div className="text-red-400">
+                        <div className="money">total money out</div>
                         <span>400</span>
                     </div>
-                </CardContent>
+                </CardFooter>
             </Card>
             <Drawer
                 open={openDrawer}
                 setDrawer={setDrawer}
-                name={whichDrawer}
             />
         </ThemeProvider>
     );
