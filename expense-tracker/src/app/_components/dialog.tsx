@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select } from '@/app/_components/categorySelector';
 
-export function Dialog() {
+export function CreateTransactionDialog() {
     return (
         <_Dialog>
             <DialogTrigger asChild>

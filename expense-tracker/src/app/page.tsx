@@ -7,7 +7,7 @@ import { Drawer } from '@/app/_components/drawer';
 import { ReceiptText } from 'lucide-react';
 import { DatePicker } from '@/app/_components/datepicker';
 import { Tooltip } from '@/app/_components/tooltip';
-import { Dialog } from '@/app/_components/dialog';
+import { CreateTransactionDialog } from '@/app/_components/dialog';
 
 export default function Home() {
     const [openDrawer, setDrawer] = useState(false);
@@ -32,7 +32,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent className="flex justify-between gap-2">
                     <DatePicker />
-                    <Dialog />
+                    <CreateTransactionDialog />
                 </CardContent>
                 <CardFooter className="justify-between">
                     <div className="text-green-400">

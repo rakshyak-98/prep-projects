@@ -33,3 +33,10 @@ model user {
   name String
   totalBalance Int @default(0)
 }
+
+model transactions {
+  id Int @id @default(autoincrement())
+  amount Int
+  comment String
+  category Int 
+}

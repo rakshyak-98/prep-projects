@@ -10,14 +10,34 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 
+import {CATEGORY} from "@/lib/enums"
+
 interface ICategory {
     id: Number;
-    label: string;
+    label: Number;
     value: string;
 }
 
+const categoryOptions: ICategory[] = [
+    {
+        id: 1,
+        label: CATEGORY.Grocery,
+        value: 'grocery',
+    },
+    {
+        id: 2,
+        label: CATEGORY.Outdoor,
+        value: 'outdoor'
+    },
+    {
+       id: 3,
+        label: CATEGORY.Friend,
+        value: 'friend'
+    }
+];
+
 export function Select() {
-    const [categoryList, setCategoryList] = React.useState([]);
+    const [categoryList, setCategoryList] = React.useState(categoryOptions);
     return (
         <_Select>
             <SelectTrigger>
@@ -28,7 +48,7 @@ export function Select() {
                     {categoryList.map((data: ICategory) => {
                         return (
                             <>
-                                <SelectLabel>{data.label}</SelectLabel>
+                                {/* <SelectLabel>{data.label}</SelectLabel> */}
                                 <SelectItem value={data.id.toString()}>{data.value}</SelectItem>
                             </>
                         );
