@@ -1,8 +1,9 @@
 import { NextResponse, NextRequest } from "next/server"
-import { getAllCategory } from "@/action/db"
+import { PrismaClient } from "@prisma/client"
+
+const client = new PrismaClient();
 
 export async function GET(req: NextRequest, context: any) {
-    console.log(req.body)
-    const data = await getAllCategory()
+    const data = client.category.findMany({ select: { id: true, name: true } });
     return NextResponse.json({ data })
 }

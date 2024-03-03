@@ -22,23 +22,11 @@ npm run create-prisma
 npm run migrate
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
 ## Reference
 - [prisma connection urls](https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/relational-databases/connect-your-database-typescript-postgresql)
 ### Errors Found when creating project
 - [Warning: Extra attributes from the server: class,style]()
 - [TypeError: Unknown file extension ".ts" for /home/rakshyak/GitHub/personal/expense-tracker/src/client/dbClient.ts]()
+- [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes)
+- [request custom config](https://nextjs.org/docs/pages/building-your-application/routing/api-routes#custom-config)
+- [prisma select](https://www.prisma.io/docs/orm/prisma-client/queries/select-fields)
