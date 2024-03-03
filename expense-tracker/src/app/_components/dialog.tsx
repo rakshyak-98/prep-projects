@@ -2,7 +2,6 @@ import { Button } from '@/components/ui/button';
 import {
     Dialog as _Dialog,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
@@ -58,4 +57,3 @@ export function CreateTransactionDialog() {
         </_Dialog>
     );
 }
-
