@@ -30,3 +30,4 @@ npm run migrate
 - [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes)
 - [request custom config](https://nextjs.org/docs/pages/building-your-application/routing/api-routes#custom-config)
 - [prisma select](https://www.prisma.io/docs/orm/prisma-client/queries/select-fields)
+- [route handlers `route.js`](https://nextjs.org/docs/app/building-your-application/routing/route-handlers)
