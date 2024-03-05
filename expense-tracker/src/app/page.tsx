@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import { DropdownMenu } from '@/app/_components/dropdown';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ThemeProvider } from '@/providers/themeProviders';
 import { Drawer } from '@/app/_components/drawer';
@@ -52,4 +51,3 @@ export default function Home() {
         </ThemeProvider>
     );
 }
-
