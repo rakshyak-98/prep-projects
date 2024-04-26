@@ -1,7 +1,9 @@
+import {createLogger} from "../logger.js"
 import chalk from "chalk";
+const logger = createLogger("commands:start")
 
 export default function start(config) {
-	console.log(chalk.bgCyanBright("\tStarting the app"));
-	console.log(chalk.gray("Received configuration in start -", config));
+	logger.highlight(chalk.bgCyanBright("\tStarting the app"));
+	logger.debug(chalk.gray("Received configuration in start -", config));
 };
 
