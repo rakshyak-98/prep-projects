@@ -1,0 +1,19 @@
+{
+  "name": "web-server",
+  "version": "1.0.0",
+  "description": "- No.1 beginner trap is socket programming is \"concatenating and splitting TCP packet\" because there is no such thing as \"TCP packets\". - protocols are required to interpret TCP data by imposing boundaries withing the byte stream. ## Byte Stream va Packet: DNS as an Example ### implication of Byte Stream - DNS runs on UDP, the client sends a single request message and the server responds with a single response message. - A DNS message is encapsulated in a UDP packet. - Due to drawbacks of packet-based protocols, e.g., the ability to use large messages, DNS is also designed to run on TCP. But TCP knows nothing about \"message\", so when sending DNS messages over TCP, a **2-byte length filed** is prepended to each DNS message so that the server or client can tell which part of the byte is stream is which message. ## TCP start with a Handshake To establish a TCP connection, there should be a client and server. The server waits for the client at a specific address (IP + prot), this step is called *bind & listen*. Then the client can connect to the address. The \"connect\" operation involves a 3-step handshake (SYN, SYN-ACK, ACK) but this is not our concern because the OS does it transparently. After the OS completes the handshake, the connection can be accepted by the server. ## TCP Bidirectional and Full-Duplex - TCP connection can be use as a bi-directional byte stream, with 2 channels of each direction. Each peer can send and receive at the same time (e.g. WebSocket), this is called *full-duplex-communication*. ## TCP End with 2 handshake - A peer tells the other side that no more data wil lbe send with the FIN flag, then the other side ACKs the FIN. The remote application is notified of the termination when reading from the channel. Each direction of channels can be terminated independently, so the other side also performs the same handshake to *fully* close the connection. # Socket TCP connection is managed by operating system, and you use socket API socket handler to refer to that connection. In NodeJS, socket handles are wrapped into JS objects with methods on them. Any OS handle must be closed by the application to terminate the underlying resource and recycle the handle. ## Listening socket and Connection Socket TCP connection listen of a particular address (IP + port) and accept client connections from that address. The listening address is also represented by a socket handle. And when you accept a new client connection, you get the socket handle of the TCP connection. 1. Listening Sockets: Obtained by *listening* on an address. 2. Connection Sockets: Obtained by *accepting* a client connection for the listening socket. ## End of Transmission Send and receive are also called *read* and *write*. For the write side, there are ways to tell the peer that no more data will be sent. - Closing the socket terminates a connection and causes the TCP FIN to be sent. - You can also shutdown your side of the transmission (also send FIN) while still being able to receive data from the peer. This is called *half-open* connection.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/echo-server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.12.11"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.2"
+  }
+}
