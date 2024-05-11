@@ -80,14 +80,26 @@ function soWrite(conn: TCPConn, data: Buffer): Promise<void> {
 
 async function serverClient(socket: net.Socket): Promise<void> {
 	const conn: TCPConn = soInit(socket);
+	const buf: DynBuf = { data: Buffer.alloc(0), length: 0 };
 	while (true) {
-		const data = await soRead(conn);
-		if (data.length === 0) {
-			console.log("end connection");
-			break;
+		const msg: null | Buffer = cutMessage(buf);
+		if (!msg) {
+			const data: Buffer = await soRead(conn);
+			bufPush(buf, data);
+			if (data.length === 0) {
+				console.log("end connection");
+				return;
+			}
+			continue;
 		}
-		console.log("data: ", data);
-		await soWrite(conn, data);
+		if (msg.equals(Buffer.from("quit\n"))) {
+			await soWrite(conn, Buffer.from("Bye.\n"));
+			socket.destroy();
+			return;
+		} else {
+			const reply = Buffer.concat([Buffer.from("Echo: "), msg]);
+			await soWrite(conn, reply);
+		}
 	}
 }
 
@@ -127,7 +139,7 @@ function soAccept(listener: TCPListener): Promise<TCPConn> {
 function bufPush(buf: DynBuf, data: Buffer) {
 	const newLen = buf.length + data.length;
 	if (buf.length < newLen) {
-		let cap = Math.max(buf.length, 32);
+		let cap = Math.max(buf.data.length, 32);
 		while (cap < newLen) {
 			cap *= 2;
 		}
@@ -135,7 +147,7 @@ function bufPush(buf: DynBuf, data: Buffer) {
 		buf.data.copy(grown, 0, 0);
 		buf.data = grown;
 	}
-	data.copy(buf.data, buf.data.length, 0);
+	data.copy(buf.data, buf.length, 0);
 	buf.length = newLen;
 }
 
