@@ -1,5 +1,10 @@
 import * as net from "net";
 
+type DynBuf = {
+	data: Buffer;
+	length: number;
+};
+
 type TCPConn = {
 	socket: net.Socket;
 	err: null | Error;
@@ -117,6 +122,36 @@ function soAccept(listener: TCPListener): Promise<TCPConn> {
 			listener.socket.destroy();
 		}
 	});
+}
+
+function bufPush(buf: DynBuf, data: Buffer) {
+	const newLen = buf.length + data.length;
+	if (buf.length < newLen) {
+		let cap = Math.max(buf.length, 32);
+		while (cap < newLen) {
+			cap *= 2;
+		}
+		const grown = Buffer.alloc(cap);
+		buf.data.copy(grown, 0, 0);
+		buf.data = grown;
+	}
+	data.copy(buf.data, buf.data.length, 0);
+	buf.length = newLen;
+}
+
+function cutMessage(buf: DynBuf): null | Buffer {
+	const idx = buf.data.subarray(0, buf.length).indexOf("\n");
+	if (idx < 0) {
+		return null;
+	}
+	const msg = Buffer.from(buf.data.subarray(0, idx + 1));
+	bufPop(buf, idx + 1);
+	return msg;
+}
+
+function bufPop(buf: DynBuf, len: number): void {
+	buf.data.copyWithin(0, len, buf.length);
+	buf.length -= len;
 }
 
 const listener = soListener(3000, "localhost");
