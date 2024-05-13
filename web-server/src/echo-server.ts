@@ -41,6 +41,15 @@ type TCPListener = { socket: net.Socket };
 declare function fieldGet(headers: Buffer[], key: string): null | Buffer;
 declare function encodeHTTPResp(resp: HTTPRes): Buffer;
 
+class HTTPError extends Error{
+	statusCode: number;
+	constructor(code: number, message: string){
+		super();
+		this.statusCode = code;
+		Object.setPrototypeOf(this, HTTPError.prototype);
+	}
+}
+
 function soInit(socket: net.Socket): TCPConn {
 	const conn: TCPConn = {
 		socket: socket,
