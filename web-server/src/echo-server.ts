@@ -44,7 +44,7 @@ declare function encodeHTTPResp(resp: HTTPRes): Buffer;
 class HTTPError extends Error{
 	statusCode: number;
 	constructor(code: number, message: string){
-		super();
+		super(message);
 		this.statusCode = code;
 		Object.setPrototypeOf(this, HTTPError.prototype);
 	}
