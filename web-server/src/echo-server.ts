@@ -263,7 +263,7 @@ function parseHTTPReq(data: Buffer): HTTPReq {
 	};
 }
 
-function readerFromReq(conn: TCPConn, buf: DynBuf, re: HTTPReq): BodyReader {
+function readerFromReq(conn: TCPConn, buf: DynBuf, req: HTTPReq): BodyReader {
 	let bodyLen = -1;
 	const contentLen = fieldGet(req.headers, "Content-length");
 	if (contentLen) {
