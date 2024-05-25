@@ -41,9 +41,9 @@ type TCPListener = { socket: net.Socket };
 declare function fieldGet(headers: Buffer[], key: string): null | Buffer;
 declare function encodeHTTPResp(resp: HTTPRes): Buffer;
 
-class HTTPError extends Error{
+class HTTPError extends Error {
 	statusCode: number;
-	constructor(code: number, message: string){
+	constructor(code: number, message: string) {
 		super(message);
 		this.statusCode = code;
 		Object.setPrototypeOf(this, HTTPError.prototype);
@@ -121,7 +121,7 @@ function soWrite(conn: TCPConn, data: Buffer): Promise<void> {
 async function serverClient(conn: TCPConn): Promise<void> {
 	const buf: DynBuf = { data: Buffer.alloc(0), length: 0 };
 	while (true) {
-		const msg: null|HTTPReq = cutMessage(buf);
+		const msg: null | HTTPReq = cutMessage(buf);
 		if (!msg) {
 			const data: Buffer = await soRead(conn);
 			bufPush(buf, data);
@@ -145,7 +145,9 @@ async function serverClient(conn: TCPConn): Promise<void> {
 		}
 
 		// make sure that the request body is consumed completely
-		while ((await reqBody.read()).length > 0) {/* empty */}
+		while ((await reqBody.read()).length > 0) {
+			/* empty */
+		}
 	} // loop for IO
 }
 
@@ -156,8 +158,8 @@ async function newConn(socket: net.Socket) {
 	} catch (exc) {
 		console.log("Exception: ", exc);
 		if (exc instanceof HTTPError) {
-			const res: HTTPRes = {
-				code: exc.code,
+			const resp: HTTPRes = {
+				code: exc.statusCode,
 				headers: [],
 				body: readerFromMemory(Buffer.from(exc.message + "\n")),
 			};
@@ -209,7 +211,7 @@ function bufPush(buf: DynBuf, data: Buffer) {
 	buf.length = newLen;
 }
 
-function cutMessage(buf: DynBuf): null | Buffer {
+function cutMessage(buf: DynBuf): null | HTTPReq {
 	const idx = buf.data.subarray(0, buf.length).indexOf("\r\n\r\n");
 	if (idx < 0) {
 		if (buf.length >= kMaxHeaderLen) {
@@ -217,7 +219,7 @@ function cutMessage(buf: DynBuf): null | Buffer {
 		}
 		return null;
 	}
-	const msg = Buffer.from(buf.data.subarray(0, idx + 1));
+	const msg: HTTPReq = parseHTTPReq(Buffer.from(buf.data.subarray(0, idx + 1)));
 	bufPop(buf, idx + 1);
 	return msg;
 }
@@ -328,15 +330,15 @@ async function handleReq(req: HTTPReq, body: BodyReader): Promise<HTTPRes> {
 	};
 }
 
-async function writeHTTPResp(conn: TCPConn, resp: HTTPRes): Promise<void>{
-	if (resp.body.length < 0){
+async function writeHTTPResp(conn: TCPConn, resp: HTTPRes): Promise<void> {
+	if (resp.body.length < 0) {
 		throw new Error("TODO: chunked encoding");
 	}
-	console.assert(!fieldGet(resp.headers, 'Content-Lenght'));
+	console.assert(!fieldGet(resp.headers, "Content-Lenght"));
 	await soWrite(conn, encodeHTTPResp(resp));
-	while(true){
+	while (true) {
 		const data = await resp.body.read();
-		if(data.length === 0){
+		if (data.length === 0) {
 			break;
 		}
 		await soWrite(conn, data);
