@@ -68,3 +68,6 @@ It's a bit tricky because the number of addresses that come back isn't fixed. Th
 ### Why used SHA1 hashing function?
 SHA1 is the one used by bittorrent so in our case no other hashing function will do.
 **why use hash ?** it is a compact way to uniqely identify the torrent. A hashing function return a fixed length buffer. And the info property contains information about every piece of the torrent's files, it's a good way to uniquely identify a torrent.
+
+## Why `bignum` package is used?
+There's one problem to consider with the file, size, which is that it may be larger than a 32-bit integer. The easiest way to deal with this is to install a module to handle larger number. The option `{size: 8}` tells the function you want to write the number to a buffer of size 8 bytes. This is also the buffer size required by the [announce request](https://allenkim67.github.io/programming/2016/05/04/how-to-make-your-own-bittorrent-client.html#announce-messaging)
