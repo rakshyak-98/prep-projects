@@ -12,10 +12,10 @@ module.exports.getPeers = (torrent, callback) => {
 			const connResp = parseConnResp(response);
 			const announceReq = buildAnnounceReq(connResp.connectionId);
 			udpSend(socket, announceReq, url);
-		} else if (reqType(response) === "announce"){
-            const announceResp = parseAnnounceResp(response);
-            callback(announceResp.peers);
-        }
+		} else if (reqType(response) === "announce") {
+			const announceResp = parseAnnounceResp(response);
+			callback(announceResp.peers);
+		}
 	});
 };
 
@@ -29,7 +29,7 @@ function reqType(resp) {}
 function buildConnReq() {
 	const buf = Buffer.alloc(16);
 	// connection_id
-	buf.writeUInt32BE(0x417,0);
+	buf.writeUInt32BE(0x417, 0);
 	buf.writeUInt32BE(0x27101980, 4);
 	// action
 	buf.writeUInt32BE(0, 8);
@@ -40,6 +40,13 @@ function buildConnReq() {
 
 function buildAnnounceReq(connId) {}
 
-function parseConnResp(resp) {}
+function parseConnResp(resp) {
+	return {
+		action: resp.readUInt32BE(0),
+		transactionId: resp.readUInt32BE(4),
+		connectionId: resp.slice(8),
+	};
+}
 
 function parseAnnounceResp(resp) {}
+
