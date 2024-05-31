@@ -1,7 +1,7 @@
 const crypto = require("node:crypto");
 const dgram = require("node:dgram");
 
-const util = require("./util.cjs");
+const util = require("./util.js");
 
 const urlParse = require("node:url").parse;
 const Buffer = require("node:buffer").Buffer;
