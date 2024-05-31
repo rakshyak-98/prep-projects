@@ -64,3 +64,7 @@ Parsing the response is much simpler. Here’s how the response is formatted:
 | 20 + 6 * N |                  |                |                                   |
 
 It's a bit tricky because the number of addresses that come back isn't fixed. The addresses come in group of 6 bytes, the first 4 represent the IP address and the next 2 represent the port. So our code will need to correctly break up the address part of the response.
+
+### Why used SHA1 hashing function?
+SHA1 is the one used by bittorrent so in our case no other hashing function will do.
+**why use hash ?** it is a compact way to uniqely identify the torrent. A hashing function return a fixed length buffer. And the info property contains information about every piece of the torrent's files, it's a good way to uniquely identify a torrent.
