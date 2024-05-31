@@ -71,3 +71,12 @@ SHA1 is the one used by bittorrent so in our case no other hashing function will
 
 ## Why `bignum` package is used?
 There's one problem to consider with the file, size, which is that it may be larger than a 32-bit integer. The easiest way to deal with this is to install a module to handle larger number. The option `{size: 8}` tells the function you want to write the number to a buffer of size 8 bytes. This is also the buffer size required by the [announce request](https://allenkim67.github.io/programming/2016/05/04/how-to-make-your-own-bittorrent-client.html#announce-messaging)
+
+## Handle UDP messages dropped in transit
+retry function will wait for ideal time 2^n*15 seconds between each request up to 8 requests total according to the [BEP]()
+
+# Downloading from peers
+- first you'll want to create a tcp connection with all the peers in your list. The more peers you can get connected to the faster you can download your files.
+- After exchanging some messages with the peers as setup, you should start requesting pieces of the files you want. A torrent's shared files are broken up into pieces so that you can download different parts of the files from different peers simultaneously.
+- When we're done receiving a piece from a peer we'll want to request the next piece we need from them. Ideally you want all the connections to be requesting different and new pieces so you'll need to keep and new pieces so you'll need to keep track of which pieces you already have and which onces you still need.
+- finally, when you receive the pieces they'll be store in memory so you'll need to write the data to your hard disk. Hopefully at this point you'll be done! ^_^
