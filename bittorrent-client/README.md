@@ -51,7 +51,7 @@ Parsing the response is much simpler. Here’s how the response is formatted:
 | 96     | 16-bit integer   | port         | ? // should be betwee  |
 | 98     |                  |              |                         |
 
-### Parsing the response
+### Parsing the respons.e
 | Offset     | Size             | Name           | Value                             |
 |------------|------------------|----------------|-----------------------------------|
 | 0          | 32-bit integer   | action         | 1 // announce                     |
@@ -73,7 +73,7 @@ SHA1 is the one used by bittorrent so in our case no other hashing function will
 There's one problem to consider with the file, size, which is that it may be larger than a 32-bit integer. The easiest way to deal with this is to install a module to handle larger number. The option `{size: 8}` tells the function you want to write the number to a buffer of size 8 bytes. This is also the buffer size required by the [announce request](https://allenkim67.github.io/programming/2016/05/04/how-to-make-your-own-bittorrent-client.html#announce-messaging)
 
 ## Handle UDP messages dropped in transit
-retry function will wait for ideal time 2^n*15 seconds between each request up to 8 requests total according to the [BEP]()
+retry function should wait for 2^n*15 seconds (ideal time) between each request up to 8 requests total according to the [BEP](http://www.bittorrent.org/beps/bep_0015.html).
 
 # Downloading from peers
 - first you'll want to create a tcp connection with all the peers in your list. The more peers you can get connected to the faster you can download your files.
