@@ -3,22 +3,47 @@ const Buffer = require("node:buffer").Buffer;
 const tracker = require("./tracker");
 
 module.exports = (torrent) => {
+	const requested = [];
 	tracker.getPeers(torrent, (peers) => {
-		peers.forEach(download);
+		peers.forEach((peer) => download(peer, torrent, requested));
 	});
 };
 
-function download(peer) {
+function download(peer, torrent, requested) {
 	const socket = new net.Socket();
 	socket.connect(peer.port, peer.id, () => {
 		socket.write(message.buildHandshake(torrent));
 	});
-	onWholeMsg(socket, (msg) => msgHandler(msg, socket));
+	onWholeMsg(socket, (msg) => msgHandler(msg, socket, requested, queue));
 }
 
-function msgHandler(msg, socket) {
-	if (isHandshake(msg)) socket.write(message.buildInterested());
+function msgHandler(msg, socket, requested) {
+	if (isHandshake(msg)) {
+		socket.write(message.buildInterested());
+	} else {
+		const m = message.parse(msg);
+		if (m.id === 0) chokeHandler();
+		if (m.id === 1) unChokeHandler();
+		if (m.id === 4) haveHandler(m.payload, socket, requested, queue);
+		if (m.id === 5) bitfieldHandler(m.payload);
+		if (m.id === 7) pieceHandler(m.payload, socket, requested, queue);
+	}
 }
+
+function haveHandler(payload, socket, requested, queue) {
+	const pieceIndex = payload.readUInt32BE(0);
+	queue.push(pieceIndex);
+	if (queue.length === 1) {
+		requestPiece(socket, requested, queue);
+	}
+}
+
+function pieceHandler(payload, socket, requested, queue) {
+	queue.shift();
+	requestedPiece(socket, requested, queue);
+}
+
+
 
 function isHandshake(msg) {
 	return (
@@ -40,22 +65,8 @@ function onWholeMsg(socket, callback) {
 	});
 }
 
-function msgHandler(msg, socket) {
-	if (inHandshake(msg)) {
-		socket.write(message.buildInterested());
-	} else {
-		const m = message.parse(msg);
-		if (m.id === 0) chokeHandler();
-		if (m.id === 1) unChokeHandler();
-		if (m.id === 4) haveHandler(m.payload);
-		if (m.id === 5) bitfieldHandler(m.payload);
-		if (m.id === 7) pieceHandler(m.payload);
-	}
-}
-
 function chokeHandler() {}
 function unChokeHandler() {}
-function haveHandler() {}
 function bitfieldHandler() {}
 function pieceHandler() {}
 
