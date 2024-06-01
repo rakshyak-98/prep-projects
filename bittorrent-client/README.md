@@ -7,6 +7,8 @@ Bencode is a data serialization format
 HTTP is built on top of another protocol TCP, which must create a persistance connection before sending data from one user to another use which makes it slower then UDP. In case of UDP the data sent is small enough (like 512 bytes), you don't to worry about receiving only part of the data or out of order. It is possible sometime the the sent data will never reach its destination so data need to be re-send or re-requested. For this UDP is good choice for tracker because they send small messages. And we use TCP when we need to send file between peers because those files tend to larger and need to be intact.
 ### Socket
 A socket is an Object through which network communication can happen. In order to send a message through socket it must be buffer not string, or number.
+- announce request: is generated to tell the tracker which file intrusted in.
+- connect request:
 ### Connect messaging
 Each message is a buffer with a specific format described in the [BEP](http://www.bittorrent.org/beps/bep_0015.html).
 The BEP describe the connect request as follows:
@@ -74,6 +76,7 @@ There's one problem to consider with the file, size, which is that it may be lar
 
 ## Handle UDP messages dropped in transit
 retry function should wait for 2^n*15 seconds (ideal time) between each request up to 8 requests total according to the [BEP](http://www.bittorrent.org/beps/bep_0015.html).
+>[!NOTE] it is necessary to re-request a connection ID when re-transmission has expired.
 
 # Downloading from peers
 - first you'll want to create a tcp connection with all the peers in your list. The more peers you can get connected to the faster you can download your files.

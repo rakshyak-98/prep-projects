@@ -9,9 +9,11 @@ const Buffer = require("node:buffer").Buffer;
 module.exports.getPeers = (torrent, callback) => {
 	const socket = dgram.createSocket("udp4");
 	const url = torrent.announce.toString("utf-8");
+	udpSend(socket, buildConnReq(), url);
 	socket.on("message", (response) => {
 		if (respType(response) === "connect") {
 			const connResp = parseConnResp(response);
+			// send announce request to tell tracker for intrusted files.
 			const announceReq = buildAnnounceReq(connResp.connectionId);
 			udpSend(socket, announceReq, url);
 		} else if (respType(response) === "announce") {
@@ -37,7 +39,7 @@ function buildConnReq() {
 	const buf = Buffer.alloc(16);
 	// connection_id
 	buf.writeUInt32BE(0x417, 0);
-	buf.writeUInt32BE(0x27101980, 4);
+	buf.writeUInt32BE(0x27101980, 4)
 	// action
 	buf.writeUInt32BE(0, 8);
 	// transaction id
