@@ -25,7 +25,7 @@ function msgHandler(msg, socket, requested) {
 		if (m.id === 0) chokeHandler();
 		if (m.id === 1) unChokeHandler();
 		if (m.id === 4) haveHandler(m.payload, socket, requested, queue);
-		if (m.id === 5) bitfieldHandler(m.payload);
+		if (m.id === 5) bitFieldHandler(m.payload);
 		if (m.id === 7) pieceHandler(m.payload, socket, requested, queue);
 	}
 }
@@ -67,6 +67,6 @@ function onWholeMsg(socket, callback) {
 
 function chokeHandler() {}
 function unChokeHandler() {}
-function bitfieldHandler() {}
+function bitFieldHandler() {}
 function pieceHandler() {}
 
