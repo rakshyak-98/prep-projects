@@ -18,16 +18,16 @@ The BEP describe the connect request as follows:
 |8       | 32-bit-integer | action         | 0 // connect  |
 |12      | 32-bit-integer | transaction_id | ? // random   |
 |16      |                |                |               |
+- The `Ox` indicates that the number is a hexadecimal number, which can be more convenient representation when working with bytes.
 - this tells us that our message should start out with 64-bit integer at index 0, and that the value should be 0x417271019180.
 Since we just write 8 bytes, the index of the next part is 8. Now wre write 32-bit integer with the value 0. This moves us up to an offset of 12bytes, and we write a random 32-bit integer. So that total message length is 8byte+4byte+4byte=16byte long.
 - connection id always should be `0x41727101980` when writing the connection request.
 ### why to split the connection id into two writes in `buildConnReq` function?
-The `Ox` indicates that the number is a hexadecimal number, which can be more convenient representation when working with bytes.
-The reason we have to write 4byte chunks, is that there is no method to write 64-bit integer. Actually node.js [doesn't support precise 64-bit integers](https://stackoverflow.com/questions/307179/what-is-javascripts-highest-integer-value-that-a-number-can-go-to-without-losin). But writing a 64-bit hexadecimal number as a combination of two 32 bit hexadecimal numbers is easy.
+The reason we have to write 4byte chunks, is that there is no method to read or write 64-bit integer. Actually node.js [doesn't support precise 64-bit integers](https://stackoverflow.com/questions/307179/what-is-javascripts-highest-integer-value-that-a-number-can-go-to-without-losin).
 - `writeUInt32BE` writes an unsigned 32-bit integer in big-endian format.
 - `big-endian format` this means the most significant byte (the **big end**) is stored first.
-Parsing the response is much simpler. Here’s how the response is formatted:
 
+Parsing the response is much simpler. Here’s how the response is formatted:
 | Offset | Size            | Name            | Value                |
 |--------|-----------------|-----------------|----------------------|
 | 0      | 32-bit integer  | action          | 0 // connect         |
