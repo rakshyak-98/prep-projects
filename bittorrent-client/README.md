@@ -108,8 +108,9 @@ If you open up a torrent file, we saw that it contains data with various propert
 - these pieces are indexed starting at 0, this is how we know which piece it is that we are sending or receiving. For example, you might request the piece at index 0, that means from our previous example we want the first 1000 bytes of the file. If we ask for the piece at index 1, we want the second 1000bytes and so on.
 
 ## Job queue
-This list will contain the pieces that a single peer has. Why do we have to maintain this list? Why not just make a request for a piece as soon as we receive a **have** or **bitfiled** message? The problem is that we would probably end upu requesting all the pieces from the very first peer we connect to and then since we don't want to double request the same piece, none of the other peers would have pieces left to request.
+This list will contain the pieces that a single peer has. Why do we have to maintain this list? The problem is that we would probably end udp requesting all the pieces from the very first peer we connect to and then since we don't want to double request the same piece, none of the other peers would have pieces left to request.
 
-Event if it's possible to use a round-robin strategy so that each peer only gets a second piece to request after all peers have gotten at least one piece to request, there is still a problem. This strategy would lead to all peers having the same umber of requests, but some peers will inevitably upload faster than others. Ideally we want to fastest peers to get more requests, rather than have multiple requests bottle-necked by the slowest peer.
+- some peers will inevitably upload faster than others.
+- Ideally we want to fastest peers to get more requests, rather than have multiple requests bottle-necked by the slowest peer.
 
 A natural solution is to request just one or a few pieces from a peer at a time, and only make the next request after receiving a response. This way that faster peers will send their responses faster, *coming back* for more requests more frequently.
