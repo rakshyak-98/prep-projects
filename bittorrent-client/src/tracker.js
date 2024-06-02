@@ -23,8 +23,9 @@ module.exports.getPeers = (torrent, callback) => {
 	});
 };
 
-function udpSend(socket, rawUrl, callback = () => {}) {
+function udpSend(socket, message, rawUrl, callback = () => {}) {
 	const url = urlParse(rawUrl);
+	url.port = url.port || 6881;
 	socket.send(message, 0, message.length, url.port, url.host, callback);
 }
 
