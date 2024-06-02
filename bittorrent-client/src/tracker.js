@@ -25,8 +25,7 @@ module.exports.getPeers = (torrent, callback) => {
 
 function udpSend(socket, message, rawUrl, callback = () => {}) {
 	const url = urlParse(rawUrl);
-	url.port = url.port || 6881;
-	socket.send(message, 0, message.length, url.port, url.host, callback);
+	socket.send(message, 0, message.length, url.port || 6881, url.host, callback);
 }
 
 function respType(resp) {
