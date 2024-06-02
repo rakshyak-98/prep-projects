@@ -11,6 +11,7 @@ module.exports = (torrent) => {
 
 function download(peer, torrent, requested) {
 	const socket = new net.Socket();
+	socket.onc("error", console.log);
 	socket.connect(peer.port, peer.id, () => {
 		socket.write(message.buildHandshake(torrent));
 	});
