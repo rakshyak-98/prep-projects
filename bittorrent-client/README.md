@@ -27,6 +27,15 @@ The reason we have to write 4byte chunks, is that there is no method to read or 
 - `writeUInt32BE` writes an unsigned 32-bit integer in big-endian format.
 - `big-endian format` this means the most significant byte (the **big end**) is stored first.
 
+### How does the `readUInt16BE` function?
+Internal Steps of `readUInt16BE`:
+1. Extract Bytes:
+    - The function reads the byte at the specified offset.
+    - It then reads the next byte at the offset plus one.
+2. Combine Bytes:
+    - It shifts the first byte (most significant byte) to the left by 8 bits (one byte).
+    - It then performs a bitwise `OR` with the second byte to combine them into a 16-bit integer.
+
 Parsing the response is much simpler. Here’s how the response is formatted:
 | Offset | Size            | Name            | Value                |
 |--------|-----------------|-----------------|----------------------|
