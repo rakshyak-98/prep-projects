@@ -88,16 +88,27 @@ retry function should wait for 2^n*15 seconds (ideal time) between each request 
 >[!NOTE] it is necessary to re-request a connection ID when re-transmission has expired.
 
 # Downloading from peers
-- first you'll want to create a tcp connection with all the peers in your list. The more peers you can get connected to the faster you can download your files.
-- After exchanging some messages with the peers as setup, you should start requesting pieces of the files you want. A torrent's shared files are broken up into pieces so that you can download different parts of the files from different peers simultaneously.
-- When we're done receiving a piece from a peer we'll want to request the next piece we need from them. Ideally you want all the connections to be requesting different and new pieces so you'll need to keep and new pieces so you'll need to keep track of which pieces you already have and which onces you still need.
-- finally, when you receive the pieces they'll be store in memory so you'll need to write the data to your hard disk. Hopefully at this point you'll be done! ^_^
+- first create a tcp connection with all the peers in your list. (The more peers you can get connected to the faster you can download your files.)
+- After exchanging some messages with the peers as setup,
+    - start requesting pieces of the files you want.
+>[!INFO] A torrent's shared files are broken up into pieces so that you can download different parts of the files from different peers simultaneously.
+- When we're done receiving a piece from a peer request the next piece.
+> [!NOTE] Ideally you want all the connections to be requesting different and new pieces so you'll need to keep track of which pieces you already have and which onces you still need.
+- finally, when you receive the pieces they'll be store in memory so you'll need to write the data to your hard disk.
+
 ## Protocol overview
 Once a tcp connection is established the messages you send and receive have to follow the following protocol.
-- the first thing you want to do let your peer know which files you are interested in downloading from them, as well as some identifying info. If the peer doesn't have the files you want they will close the connection, but if they do have the files they should send back a similar message as confirmation. This is called the *handshake*.
-- the most likely thing that will happen next is that the peer will let you know what pieces they have. This happens through the *have* message contains a piece index as its payload. This means you will receive multiple have messages one for each piece that you peer has.
-The bitfield message serves a similar purpose, but does it in a different way The bitfield message can tell you all the pieces that the peer has in just one message. Id does this by sending a string of bits, one for each piece in the file. The index of each bit is the same as the pieces index, and if they have the pieces it will be set to 1, if not it will be set to 0. For example if you receive a bitfield that starts with 011001... that means they have the pieces at index 1,2, and 5 but not the pieces at index 0,3 and 4.
-It's possible to receive both *have* messages and a bitfield message, if which case you should combine them to get the full list of pieces.
+- first let your peer know which files you are interested in downloading from them, as well as some identifying info.
+- next peer will let you know what pieces they have. this happens through the *have* and *bitfield* message contains a piece index as its payload. this means you will receive multiple have messages one for each piece that your peer has.
+
+> [!INFO] the `bitfield` message serves a similar purpose, but does it in a different way the `bitfield` message can tell you all the pieces that the peer has in just one message. it does this by sending a string of bits, one for each piece in the file.
+
+> [!NOTE] The index of each bit is the same as the pieces index, and if they have the pieces it will be set to 1, if not it will be set to 0. for example if you receive a bitfield that starts with 011001... that means they have the pieces at index 1,2, and 5 but not the pieces at index 0,3 and 4.
+
+it's possible to receive both *have* messages and a bitfield message, if which case you should combine them to get the full list of pieces.
+
+### What is a **handshake**
+If the peer doesn't have the files you want they will close the connection, but if they do have the files they should send back a similar message as confirmation. This is called the *handshake*.
 
 ### message spec
 Once the handshake has been established there are 10 different types of message that can be exchanged, [specs](https://wiki.theory.org/BitTorrentSpecification#Messages).
@@ -121,3 +132,6 @@ What solves is maintain two lists, one for requested pieces and one for received
 - update the `requested` list at request time
 - update the `received` list at receive time.
 - Then whenever we have requested all pieces but there are still pieces that we haven't received, we copy the `received` list into the `requested` list, and that will allow us to re-request those missing pieces.
+
+### implementation of Choke and Un-choke
+we don't want to request any pieces until we've been un-choked. The simplest way to enforce this to create a new object that hold both our `queue` array as well as choked property.
