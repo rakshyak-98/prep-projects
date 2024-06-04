@@ -114,3 +114,10 @@ This list will contain the pieces that a single peer has. Why do we have to main
 - Ideally we want to fastest peers to get more requests, rather than have multiple requests bottle-necked by the slowest peer.
 
 A natural solution is to request just one or a few pieces from a peer at a time, and only make the next request after receiving a response. This way that faster peers will send their responses faster, *coming back* for more requests more frequently.
+
+### Request Failures
+it's possible for us to request a piece but never receive it. This is because a connection can drop at any time for whatever reason. Since we avoid requesting pieces that have been added to the `requested` array, these pieces will never be received.
+What solves is maintain two lists, one for requested pieces and one for received pieces.
+- update the `requested` list at request time
+- update the `received` list at receive time.
+- Then whenever we have requested all pieces but there are still pieces that we haven't received, we copy the `received` list into the `requested` list, and that will allow us to re-request those missing pieces.
