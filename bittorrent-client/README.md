@@ -120,6 +120,8 @@ After you establish the handshake your peers should tell you which pieces they h
 If you open up a torrent file, we saw that it contains data with various properties like the *announce* and *info* properties. Another property is *piece length* property. This tells you how long a piece is in bytes. Let's say hypothetically that you have a piece length of 1000 bytes. Then if the total size of the file's is 12000bytes, that means the file should have 12 pieces. Note that the last piece might not be the full 1000bytes. If the file were 120001bytes larger, then it would be a total of 13 pieces, where the last piece is just 1 byte large.
 - these pieces are indexed starting at 0, this is how we know which piece it is that we are sending or receiving. For example, you might request the piece at index 0, that means from our previous example we want the first 1000 bytes of the file. If we ask for the piece at index 1, we want the second 1000bytes and so on.
 
+>[!INFO] piece length can be found in torrent file, and block length is 2^14 bytes by convention.
+
 ## Job queue
 This list will contain the pieces that a single peer has. Why do we have to maintain this list? The problem is that we would probably end udp requesting all the pieces from the very first peer we connect to and then since we don't want to double request the same piece, none of the other peers would have pieces left to request.
 
@@ -152,3 +154,7 @@ the `torrent.info.pieces` is a buffer that contain 20-byte SHA-1 hash of each pi
 
 ### the `requested` and `received` arrays
 holds an array of arrays, where the inner arrays hold the status of a block at a given piece index. So if you wanted to find out the status of a block at index 1 for a piece at index 7, you could look up `_requested[7][1]` and check it's set to true. As before all values are initially set to false.
+
+### the `begin`and `length` property. Why are present?
+These two properties are necessary because sometimes a pieces is oo big for one message. Although there is some dispute about the best size, it is typically considered to be around 2^14 (16384)bytes. This is called a *block*, where a piece consists of one or more blocks. If the piece length is greater than the length of single block, then it should be broken up into blocks with one message sent for each block.
+So the "begin" field is the zero-based byte offset starting from the beginning of the piece, and the "length" of the requested block. This is always to be 2^14, except possibly the last block which might be less.
