@@ -133,5 +133,17 @@ What solves is maintain two lists, one for requested pieces and one for received
 - update the `received` list at receive time.
 - Then whenever we have requested all pieces but there are still pieces that we haven't received, we copy the `received` list into the `requested` list, and that will allow us to re-request those missing pieces.
 
-### implementation of Choke and Un-choke
-we don't want to request any pieces until we've been un-choked. The simplest way to enforce this to create a new object that hold both our `queue` array as well as choked property.
+### Other kind of messages Choke, Un-choke, interested, not interested?
+it's possible to receive another kind of message, the peer might decide they don't want to share with you! That's what the *choke*, *un-choke*, *interested*, and *not interested* message are for.
+- choked means the peer does not want to share with you.
+- un-choked peer is willing to share.
+- interested means you want what your peer has.
+- not interested means you don't want what they have.
+> [!INFO] a request start with choked and not interested. So the first message you send should be the interested message. Then hopefully the peers will send you an un-choke message and you can move to the next step. If you receive a choke message instead you can just let the connection drop.
+
+### approach taken for implementation of Choke and Un-choke
+> [!NOTE] we don't want to request any pieces until we've been un-choked.
+The simplest way to enforce this to create a new object that hold both our `queue` array as well as `choked` property.
+
+### why dividing `torrent.info.pieces` by 20?
+the `torrent.info.pieces` is a buffer that contain 20-byte SHA-1 hash of each piece, and the length gives you the total number of bytes in the buffer. That's why we divide by 20 to get the total number of pieces.
