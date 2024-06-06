@@ -1,26 +1,34 @@
 module.exports = class {
 	constructor(size) {
-		this.requested = new Array(size).fill(false);
-        this.received = new Array(size).fill(false);
+		function buildPiecesArray() {
+			const nPieces = torrent.info.pieces.length / 20;
+			const arr = new Array(nPieces).fill(null);
+			return arr.map((_, i) => new Array(tp.blockPerPieces(torrent, i).fill(false)));
+		}
+		this._requested = buildPiecesArray();
+		this._received = buildPiecesArray();
 	}
 
-	addRequest(pieceIndex) {
-		this.requested[pieceIndex] = true;
+	addRequest(pieceBlock) {
+		const blockIndex = pieceBlock.begin / tp.BLOCK_LEN;
+		this._requested[pieceBlock.index][blockIndex] = true;
 	}
 
 	addReceive(pieceIndex) {
-		this.received[pieceIndex] = true;
+		const blockIndex = pieceBlock.begin / tp.BLOCK_LEN;
+		this.received[blockIndex.index][blockIndex] = true;
 	}
 
-    isNeeded(pieceIndex){
-        if(this.requested.every(i => i === true)){
-            this.requested = this.received.slice();
-        }
-        return !this.requested[pieceIndex];
-    }
+	needed(pieceIndex) {
+		if (this._requested.every((i) => i === true)) {
+			this._requested = this._received.map((blocks) => blocks.slice());
+		}
+		const blockIndex = pieceBlock.begin / tp.BLOCK_LEN;
+		return !this._requested[pieceBlock.index][blockIndex];
+	}
 
 	idDone() {
-		return this.received.every((i) => i === true);
+		return this._received.every((blocks) => blocks.every((i) => i === true));
 	}
 };
 

@@ -3,8 +3,7 @@ const Buffer = require("node:buffer").Buffer;
 const tracker = require("./tracker");
 const Pieces = require("./pieces");
 const message = require("./message");
-
-const QUEUE = { choked: true, queue: [] }
+const Queue = require("./Queue");
 
 module.exports = (torrent) => {
 	const pieces = new Pieces(torrent.info.pieces.length / 20);
@@ -13,13 +12,13 @@ module.exports = (torrent) => {
 	});
 };
 
-function download(peer, torrent, requested) {
+function download(peer, torrent, pieces, file) {
 	const socket = new net.Socket();
 	socket.onc("error", console.log);
 	socket.connect(peer.port, peer.id, () => {
 		socket.write(message.buildHandshake(torrent));
 	});
-	const queue = QUEUE;
+	const queue = new Queue(torrent);
 	onWholeMsg(socket, (msg) => msgHandler(msg, socket, pieces, requested, queue));
 }
 
@@ -78,7 +77,7 @@ function chokeHandler(socket) {
 /**
  * @param {net.Socket} socket;
  * @param {QUEUE} queue;
-*/
+ */
 function unChokeHandler(socket, piece, queue) {
 	queue.choked = false;
 	requestPiece(socket, piece, queue);
@@ -93,7 +92,7 @@ function requestPiece(socket, piece, queue) {
 	if (queue.choked) return null;
 	while (queue.queue.length) {
 		const pieceIndex = queue.shift();
-		if (piece.isNeeded(pieceIndex)) {
+		if (piece.needed(pieceIndex)) {
 			socket.write(message.buildRequest(pieceIndex));
 			piece.addRequest(pieceIndex);
 			break;

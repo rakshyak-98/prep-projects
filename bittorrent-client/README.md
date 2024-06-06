@@ -80,6 +80,8 @@ It's a bit tricky because the number of addresses that come back isn't fixed. Th
 SHA1 is the one used by bittorrent so in our case no other hashing function will do.
 **why use hash ?** it is a compact way to uniqely identify the torrent. A hashing function return a fixed length buffer. And the info property contains information about every piece of the torrent's files, it's a good way to uniquely identify a torrent.
 
+> [!INFO] `torrent.info.pieces` is a buffer that contains 20-byte SHA-1 hash of each piece, and the length gives you the total number of bytes in the buffer.
+
 ## Why `bignum` package is used?
 There's one problem to consider with the file, size, which is that it may be larger than a 32-bit integer. The easiest way to deal with this is to install a module to handle larger number. The option `{size: 8}` tells the function you want to write the number to a buffer of size 8 bytes. This is also the buffer size required by the [announce request](https://allenkim67.github.io/programming/2016/05/04/how-to-make-your-own-bittorrent-client.html#announce-messaging)
 
@@ -147,3 +149,6 @@ The simplest way to enforce this to create a new object that hold both our `queu
 
 ### why dividing `torrent.info.pieces` by 20?
 the `torrent.info.pieces` is a buffer that contain 20-byte SHA-1 hash of each piece, and the length gives you the total number of bytes in the buffer. That's why we divide by 20 to get the total number of pieces.
+
+### the `requested` and `received` arrays
+holds an array of arrays, where the inner arrays hold the status of a block at a given piece index. So if you wanted to find out the status of a block at index 1 for a piece at index 7, you could look up `_requested[7][1]` and check it's set to true. As before all values are initially set to false.
