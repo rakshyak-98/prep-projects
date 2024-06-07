@@ -14,12 +14,12 @@ module.exports = class {
 		this._requested[pieceBlock.index][blockIndex] = true;
 	}
 
-	addReceive(pieceIndex) {
+	addReceive(pieceBlock) {
 		const blockIndex = pieceBlock.begin / tp.BLOCK_LEN;
-		this.received[blockIndex.index][blockIndex] = true;
+		this._received[blockIndex.index][blockIndex] = true;
 	}
 
-	needed(pieceIndex) {
+	needed(pieceBlock) {
 		if (this._requested.every((i) => i === true)) {
 			this._requested = this._received.map((blocks) => blocks.slice());
 		}
