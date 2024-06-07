@@ -4,12 +4,12 @@
 ### Bencode
 Bencode is a data serialization format
 ### Why torrent switch from HTTP to UDP protocol and what is the difference
-HTTP is built on top of another protocol TCP, which must create a persistance connection before sending data from one user to another use which makes it slower then UDP. In case of UDP the data sent is small enough (like 512 bytes), you don't to worry about receiving only part of the data or out of order. It is possible sometime the the sent data will never reach its destination so data need to be re-send or re-requested. For this UDP is good choice for tracker because they send small messages. And we use TCP when we need to send file between peers because those files tend to larger and need to be intact.
+HTTP is built on top of another protocol TCP, which must create a persistance connection before sending data from one user to another use which makes it slower then UDP. In case of UDP the data sent is small enough (like 512 bytes), you don't to worry about receiving only part of the data or out of order. It is possible sometime that the sent data will never reach its destination so data need to be re-send or re-requested. For this UDP is good choice for tracker because they send small messages. And we use TCP when we need to send file between peers because those files tend to larger and need to be intact.
 ### Socket
 A socket is an Object through which network communication can happen. In order to send a message through socket it must be buffer not string, or number.
 - announce request: is generated to tell the tracker which file intrusted in.
 - connect request:
-### Connect messaging
+### Connect message
 Each message is a buffer with a specific format described in the [BEP](http://www.bittorrent.org/beps/bep_0015.html).
 The BEP describe the connect request as follows:
 | Offset | Size           | Name           | Value         |
@@ -36,6 +36,7 @@ Internal Steps of `readUInt16BE`:
     - It shifts the first byte (most significant byte) to the left by 8 bits (one byte).
     - It then performs a bitwise `OR` with the second byte to combine them into a 16-bit integer.
 
+### response message format
 Parsing the response is much simpler. Here’s how the response is formatted:
 | Offset | Size            | Name            | Value                |
 |--------|-----------------|-----------------|----------------------|
@@ -44,7 +45,7 @@ Parsing the response is much simpler. Here’s how the response is formatted:
 | 8      | 64-bit integer  | connection_id   |                      |
 | 16     |                 |                 |                      |
 
-### Announce format
+### Announce message format
 | Offset | Size             | Name         | Value                   |
 |--------|------------------|--------------|-------------------------|
 | 0      | 64-bit integer   | connection_id|                         |
@@ -62,7 +63,7 @@ Parsing the response is much simpler. Here’s how the response is formatted:
 | 96     | 16-bit integer   | port         | ? // should be betwee  |
 | 98     |                  |              |                         |
 
-### Parsing the respons.e
+### Parsing response message format
 | Offset     | Size             | Name           | Value                             |
 |------------|------------------|----------------|-----------------------------------|
 | 0          | 32-bit integer   | action         | 1 // announce                     |
