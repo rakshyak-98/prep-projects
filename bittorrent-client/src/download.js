@@ -1,3 +1,4 @@
+const fs = require("fs");
 const net = require("node:net");
 const Buffer = require("node:buffer").Buffer;
 const tracker = require("./tracker");
@@ -65,7 +66,7 @@ function isHandshake(msg) {
  */
 
 function haveHandler(payload, socket, requested, queue) {
-	// action index to determine - announce or connect;
+	// if the peer has the index-0 piece, first bit is 1. if not it will be 0;
 	const pieceIndex = payload.readUInt32BE(0);
 	const queueEmpty = queue.length === 0;
 	queue.push(pieceIndex);
@@ -78,7 +79,7 @@ function chokeHandler(socket, pieces) {
 
 /**
  * @param {net.Socket} socket;
- * @param {} pieces;
+ * @param {Pieces} pieces;
  * @param {Queue} queue;
  */
 function unChokeHandler(socket, pieces, queue) {
@@ -89,7 +90,7 @@ function unChokeHandler(socket, pieces, queue) {
 /**
  * @param {net.Socket} socket
  * @param {Pieces} piece;
- * @param {QUEUE} queue;
+ * @param {Queue} queue;
  */
 function requestPiece(socket, piece, queue) {
 	if (queue.choked) return null;
@@ -114,6 +115,7 @@ function bitFieldHandler(socket, pieces, queue, payload) {
 	payload.forEach((byte, i) => {
 		for (let j = 0; j < 8; j++) {
 			if (byte % 2) queue.queue(i * 8 + 7 - j);
+			// dividing by 2 and taking the remainder will convert a base-10 to binary RHS to LSH.
 			byte = Math.floor(byte / 2);
 		}
 	});
@@ -130,19 +132,31 @@ function bitFieldHandler(socket, pieces, queue, payload) {
  * @param {String} file
  * @returns
  */
-function pieceHandler(payload, socket, pieces, queue, torrent, file) {
+function pieceHandler(payload, socket, pieces, queue, torrent, file, pieceResp) {
+	pieces.printPercentDone();
+	pieces.addReceived(pieceResp);
+	const offset = pieceResp.index * torrent.info["piece length"] + pieceResp.begin;
+	fs.write(file, pieceResp.block, 0, pieceResp.block.length, offset, () => {});
+	if (piece.isDone()) {
+		console.log("Connection end");
+		socket.end();
+		try {
+			fs.closeSync();
+		} catch (e) {}
+	} else {
+		requestPiece(socket, pieces, queue);
+	}
+}
+
+function requestPiece(socket, pieces, queue) {
 	if (queue.choked) return null;
 
-	while (queue.length()) {
-		const pieceBlock = queue.length();
-		if (pieces.needed(pieceBlock)) {
-			socket.write(message.buildRequest());
-		}
-		if (pieces.needed(pieceBlock)) {
+	while(queue.length()){
+		const pieceBlock = queue.deque();
+		if(pieces.needed(pieceBlock)){
 			socket.write(message.buildRequest(pieceBlock));
-			pieces.addRequested(pieceBlock);
+			pieces.addRequest(pieceBlock)
 			break;
 		}
 	}
 }
-

@@ -1,5 +1,5 @@
 module.exports = class {
-	constructor(size) {
+	constructor(torrent) {
 		function buildPiecesArray() {
 			const nPieces = torrent.info.pieces.length / 20;
 			const arr = new Array(nPieces).fill(null);
@@ -29,6 +29,19 @@ module.exports = class {
 
 	idDone() {
 		return this._received.every((blocks) => blocks.every((i) => i === true));
+	}
+
+	printPercentDone(){
+		const downloaded = this._received.reduce((totalBlocks, blocks) => {
+			return blocks.filter(i => i).length + totalBlocks;
+		}, 0);
+
+		const total = this._received.reduce((totalBlocks, blocks)=> {
+			return blocks.length + totalBlocks;
+		}, 0);
+
+		const percent = Math.floor(downloaded / total * 100);
+		process.stdout.write('progress:', + percent + '%\r');
 	}
 };
 

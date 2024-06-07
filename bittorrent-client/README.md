@@ -159,3 +159,9 @@ holds an array of arrays, where the inner arrays hold the status of a block at a
 ### the `begin`and `length` property. Why are present?
 These two properties are necessary because sometimes a pieces is oo big for one message. Although there is some dispute about the best size, it is typically considered to be around 2^14 (16384)bytes. This is called a *block*, where a piece consists of one or more blocks. If the piece length is greater than the length of single block, then it should be broken up into blocks with one message sent for each block.
 So the "begin" field is the zero-based byte offset starting from the beginning of the piece, and the "length" of the requested block. This is always to be 2^14, except possibly the last block which might be less.
+
+### what is a payload?
+Payload is a long string of bits.
+
+### `pieceHandler` function
+`pieceHandler` which is for when we receive the actual bytes of the piece we requested.
