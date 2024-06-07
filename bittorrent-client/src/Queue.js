@@ -10,7 +10,7 @@ module.exports = class {
 	}
 
 	queue(pieceIndex) {
-		const nBlocks = tp.blockPerPieces(this._torrent, pieceIndex);
+		const nBlocks = tp.blocksPerPiece(this._torrent, pieceIndex);
 		for (let i = 0; i < nBlocks; i++) {
 			const pieceBlock = {
 				index: pieceIndex,
