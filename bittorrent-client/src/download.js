@@ -137,7 +137,7 @@ function pieceHandler(payload, socket, pieces, queue, torrent, file, pieceResp) 
 	pieces.addReceived(pieceResp);
 	const offset = pieceResp.index * torrent.info["piece length"] + pieceResp.begin;
 	fs.write(file, pieceResp.block, 0, pieceResp.block.length, offset, () => {});
-	if (piece.isDone()) {
+	if (pieces.isDone()) {
 		console.log("Connection end");
 		socket.end();
 		try {

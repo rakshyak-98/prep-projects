@@ -1,7 +1,7 @@
 "use strict";
 
 const Buffer = require("node:buffer").Buffer;
-const torrentParser = require("./torrent-parser");
+const torrentParser = require("./torrent-parser.js");
 const util = require("./util.js");
 
 module.exports.buildHandshake = (torrent) => {
