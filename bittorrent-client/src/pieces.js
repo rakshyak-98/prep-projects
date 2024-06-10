@@ -1,9 +1,11 @@
-module.exports = class {
+const tp = require("./torrent-parser");
+
+module.exports.default = class {
 	constructor(torrent) {
 		function buildPiecesArray() {
 			const nPieces = torrent.info.pieces.length / 20;
 			const arr = new Array(nPieces).fill(null);
-			return arr.map((_, i) => new Array(tp.blockPerPieces(torrent, i).fill(false)));
+			return arr.map((_, i) => new Array(tp.blocksPerPiece(torrent, i)).fill(false));
 		}
 		this._requested = buildPiecesArray();
 		this._received = buildPiecesArray();
@@ -31,17 +33,17 @@ module.exports = class {
 		return this._received.every((blocks) => blocks.every((i) => i === true));
 	}
 
-	printPercentDone(){
+	printPercentDone() {
 		const downloaded = this._received.reduce((totalBlocks, blocks) => {
-			return blocks.filter(i => i).length + totalBlocks;
+			return blocks.filter((i) => i).length + totalBlocks;
 		}, 0);
 
-		const total = this._received.reduce((totalBlocks, blocks)=> {
+		const total = this._received.reduce((totalBlocks, blocks) => {
 			return blocks.length + totalBlocks;
 		}, 0);
 
-		const percent = Math.floor(downloaded / total * 100);
-		process.stdout.write('progress:', + percent + '%\r');
+		const percent = Math.floor((downloaded / total) * 100);
+		process.stdout.write("progress:", +percent + "%\r");
 	}
 };
 

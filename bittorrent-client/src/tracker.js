@@ -31,8 +31,9 @@ module.exports.blockLen = (torrent, pieceIndex, blockIndex) => {
 
 module.exports.getPeers = (torrent, callback) => {
 	const socket = dgram.createSocket("udp4");
+	// Retrieve Tracker URL to request to get peers list.
 	const url = torrent.announce.toString("utf-8");
-	udpSend(socket, buildConnReq(), url);
+	udpSend(socket, buildConnReq(), url, callback);
 	socket.on("message", (response) => {
 		if (respType(response) === "connect") {
 			const connResp = parseConnResp(response);
@@ -47,8 +48,9 @@ module.exports.getPeers = (torrent, callback) => {
 };
 
 function udpSend(socket, message, rawUrl, callback = () => {}) {
+	const DEFAULT_HTTP_PORT = 80;
 	const url = urlParse(rawUrl);
-	socket.send(message, 0, message.length, url.port || 6881, url.host, callback);
+	socket.send(message, 0, message.length, url.port || DEFAULT_HTTP_PORT, url.host, callback);
 }
 
 function respType(resp) {
@@ -57,6 +59,11 @@ function respType(resp) {
 	if (action === 1) return "announce";
 }
 
+/**
+ * Build a buffer which have information to raise a announce request to tracker url.
+ *
+ * @returns Buffer;
+ */
 function buildConnReq() {
 	const buf = Buffer.alloc(16);
 	// connection_id
@@ -78,7 +85,7 @@ function buildAnnounceReq(connId, torrent, port = 6881) {
 	// transaction id
 	crypto.randomBytes(4).copy(buf, 12);
 	// info hash
-	// torrentParser.infoHash(torrent).cop(buf, 16);
+	torrentParser.infoHash(torrent).cop(buf, 16);
 	// peerId
 	util.genId().copy(buf, 36);
 	// downloaded

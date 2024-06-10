@@ -9,12 +9,45 @@ Bencode is a data serialization format
 
 >[!INFO] When we use data in the networking, it's best to keep them as buffers.
 
+### What does a torrent file contains?
+A torrent file contains metadata about the files to be shared, including:
+- Announce URL: The URL of the tracker.
+- Info Hash: A unique identifier for the torrent.
+- File list: Information about the files being shared.
+
+### How does a client find peers from torrent file?
+1. Retrieve Tracker URL
+2. Announce to Tracker
+3. Receive Peer list
+
+### What is a tracker?
+is a special type of server that assists in the communication between peers using the BitTorrent protocol. In a peer-to-peer file sharing, a software client on an end PC requests a file, and portions of the requested file residing on peer machines are sent to the client, and then reassembled into a fully copy of the requested file.
+
+>[!NOTE] modern BitTorrent clients may implement a distributed hash table and peer exchange protocol to discover peers without trackers; however, trackers are still often included with torrents to improve the speed of peer discovery.
+
 ### Why torrent switch from HTTP to UDP protocol and what is the difference
+An additional advantage is that a UDP based binary protocol doesn't require a complex parser and no connection handling, reducing the complexity of tracker code and increasing it's performance.
 HTTP is built on top of another protocol TCP, which must create a persistance connection before sending data from one user to another use which makes it slower then UDP. In case of UDP the data sent is small enough (like 512 bytes), you don't to worry about receiving only part of the data or out of order. It is possible sometime that the sent data will never reach its destination so data need to be re-send or re-requested. For this UDP is good choice for tracker because they send small messages. And we use TCP when we need to send file between peers because those files tend to larger and need to be intact.
+
+### UDP is unreliable protocol, how to re-transmit lost packets?
+The application retransmit the request
+
 ### Socket
 A socket is an Object through which network communication can happen. In order to send a message through socket it must be buffer not string, or number.
 - announce request: is generated to tell the tracker which file intrusted in.
 - connect request:
+
+### Why to generate a connect request?
+To discover other peers in a swarm a client announces it's existence to a tracker. The HTTP protocol is used and a typical request contains the following parameter:
+- info_hash
+- key
+- peer_id
+- port
+- downloaded
+- left
+- uploaded
+- compact
+
 ### Connect message
 Each message is a buffer with a specific format described in the [BEP](http://www.bittorrent.org/beps/bep_0015.html).
 The BEP describe the connect request as follows:
@@ -26,8 +59,16 @@ The BEP describe the connect request as follows:
 |16      |                |                |               |
 - The `Ox` indicates that the number is a hexadecimal number, which can be more convenient representation when working with bytes.
 - this tells us that our message should start out with 64-bit integer at index 0, and that the value should be 0x417271019180.
-Since we just write 8 bytes, the index of the next part is 8. Now wre write 32-bit integer with the value 0. This moves us up to an offset of 12bytes, and we write a random 32-bit integer. So that total message length is 8byte+4byte+4byte=16byte long.
+Since we just write 8 bytes, the index of the next part is 8. Now wre write 32-bit integer with the value 0. This moves us up to an offset of 12bytes, and we write a random 32-bit integer. So that total message is 8byte+4byte+4byte=16byte long.
 - connection id always should be `0x41727101980` when writing the connection request.
+
+### What is the role of connection_id?
+It is possible to spoof the source address of a UDP packet. The tracker has to ensure this doesn't occur, so it calculates a value (connection_id) and sends it to the client. If the client spoofed it's source address, it won't receive this value (unless it's sniffing the network). The connection_id will then be send to the tracker again in packet 3. The tracker verifies the connection_id and ignores the request if it doesn't match.
+- A connection_id can be used for multiple requests.
+- A client can use a connection id until one minute after it has received it.
+- Tracker should accept the connection id until two minutes after it has been send.
+> [!NOTE] Connection IDs should not be guessable by the client.
+
 ### why to split the connection id into two writes in `buildConnReq` function?
 The reason we have to write 4byte chunks, is that there is no method to read or write 64-bit integer. Actually node.js [doesn't support precise 64-bit integers](https://stackoverflow.com/questions/307179/what-is-javascripts-highest-integer-value-that-a-number-can-go-to-without-losin).
 - `writeUInt32BE` writes an unsigned 32-bit integer in big-endian format.
@@ -171,3 +212,4 @@ Payload is a long string of bits.
 
 ### `pieceHandler` function
 `pieceHandler` which is for when we receive the actual bytes of the piece we requested.
+
