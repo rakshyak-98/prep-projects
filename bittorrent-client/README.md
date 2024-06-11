@@ -23,6 +23,11 @@ A torrent file contains metadata about the files to be shared, including:
 ### What is a tracker?
 is a special type of server that assists in the communication between peers using the BitTorrent protocol. In a peer-to-peer file sharing, a software client on an end PC requests a file, and portions of the requested file residing on peer machines are sent to the client, and then reassembled into a fully copy of the requested file.
 
+### what is announce-list?
+an 'announce-list' is a key in a torrent file that specifies multiple tracker URLs. This allows clients to have a list of trackers they can use to find peers for a given torrent.
+
+>[!INFO] using multiple trackers can improve the availability and reliability of peer discovery.
+
 >[!NOTE] modern BitTorrent clients may implement a distributed hash table and peer exchange protocol to discover peers without trackers; however, trackers are still often included with torrents to improve the speed of peer discovery.
 
 ### Why torrent switch from HTTP to UDP protocol and what is the difference

@@ -8,9 +8,13 @@ const Queue = require("./Queue");
 
 module.exports = (torrent, path) => {
 	tracker.getPeers(torrent, (peers) => {
-		const pieces = new Pieces(torrent);
-		const file = fs.openSync(path, "w");
-		peers.forEach((peer) => download(peer, torrent, pieces, file));
+		try {
+			const pieces = new Pieces(torrent);
+			const file = fs.openSync(path, "w");
+			peers.forEach((peer) => download(peer, torrent, pieces, file));
+		} catch (error) {
+			console.log(error.message);
+		}
 	});
 };
 
@@ -21,7 +25,7 @@ function download(peer, torrent, pieces, file) {
 		socket.write(message.buildHandshake(torrent));
 	});
 	const queue = new Queue(torrent);
-	onWholeMsg(socket, (msg) => msgHandler(message, socket, pieces, queue, file));
+	onWholeMsg(socket, (msg) => msgHandler(msg, socket, pieces, queue, file));
 }
 
 function onWholeMsg(socket, callback) {
@@ -151,12 +155,13 @@ function pieceHandler(payload, socket, pieces, queue, torrent, file, pieceResp) 
 function requestPiece(socket, pieces, queue) {
 	if (queue.choked) return null;
 
-	while(queue.length()){
+	while (queue.length()) {
 		const pieceBlock = queue.deque();
-		if(pieces.needed(pieceBlock)){
+		if (pieces.needed(pieceBlock)) {
 			socket.write(message.buildRequest(pieceBlock));
-			pieces.addRequest(pieceBlock)
+			pieces.addRequest(pieceBlock);
 			break;
 		}
 	}
 }
+

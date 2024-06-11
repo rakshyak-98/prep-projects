@@ -1,33 +1,10 @@
-const bignum = require("bignum");
 const crypto = require("node:crypto");
 const dgram = require("node:dgram");
-
+const torrentParser = require("./torrent-parser.js");
 const util = require("./util.js");
-
-const urlParse = require("node:url").parse;
 const Buffer = require("node:buffer").Buffer;
 
 module.exports.BLOCK_LEN = Math.pow(2, 14);
-
-module.exports.pieceLen = (torrent, pieceIndex) => {
-	const totalLength = bignum.fromBuffer(this.size(torrent)).toNumber();
-	const pieceLength = torrent.info["piece length"];
-	const latPieceLength = totalLength % pieceLength;
-	const lastPieceIndex = Math.floor(totalLength / pieceLength);
-	return lastPieceIndex === pieceIndex ? lastPieceLength : pieceLength;
-};
-
-module.exports.blockPerPiece = (torrent, pieceIndex) => {
-	const pieceLength = this.pieceLen(torrent, pieceIndex);
-	return Math.ceil(pieceLength / this.BLOCK_LEN);
-};
-
-module.exports.blockLen = (torrent, pieceIndex, blockIndex) => {
-	const pieceLength = this.pieceLen(torrent, pieceIndex, blockIndex);
-	const lastPieceLength = pieceLength % this.BLOCK_LEN;
-	const lastPieceIndex = Math.floor(pieceLength / this.BLOCK_LEN);
-	return blockIndex === lastPieceIndex ? lastPieceLength : this.BLOCK_LEN;
-};
 
 module.exports.getPeers = (torrent, callback) => {
 	const socket = dgram.createSocket("udp4");
@@ -49,8 +26,8 @@ module.exports.getPeers = (torrent, callback) => {
 
 function udpSend(socket, message, rawUrl, callback = () => {}) {
 	const DEFAULT_HTTP_PORT = 80;
-	const url = urlParse(rawUrl);
-	socket.send(message, 0, message.length, url.port || DEFAULT_HTTP_PORT, url.host, callback);
+	const url = new URL(rawUrl);
+	socket.send(message, 0, message.length, url.port || DEFAULT_HTTP_PORT, url.hostname, callback);
 }
 
 function respType(resp) {
@@ -85,13 +62,13 @@ function buildAnnounceReq(connId, torrent, port = 6881) {
 	// transaction id
 	crypto.randomBytes(4).copy(buf, 12);
 	// info hash
-	torrentParser.infoHash(torrent).cop(buf, 16);
+	torrentParser.infoHash(torrent).copy(buf, 16);
 	// peerId
 	util.genId().copy(buf, 36);
 	// downloaded
 	Buffer.alloc(8).copy(buf, 56);
 	// left
-	// torrentParser.size(torrent).copy(buf, 64);
+	torrentParser.size(torrent).copy(buf, 64);
 	// uploaded
 	Buffer.alloc(8).copy(buf, 72);
 	// event

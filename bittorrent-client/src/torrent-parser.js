@@ -29,7 +29,7 @@ module.exports.pieceLen = (torrent, pieceIndex) => {
 	const lastPieceLength = totalLength % pieceLength;
 	let lastPieceIndex = Math.floor(totalLength / pieceLength);
 
-	return lastPieceIndex = pieceIndex ? lastPieceIndex : pieceLength;
+	return lastPieceIndex = pieceIndex ? lastPieceLength : pieceLength;
 }
 
 module.exports.blocksPerPiece = (torrent, pieceIndex) => {
