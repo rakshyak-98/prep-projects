@@ -11,6 +11,9 @@ module.exports.open = (filepath) => {
 	return benCode.decode(fs.readFileSync(filepath));
 };
 
+/**
+ * Generate info_hash for Tracker Connection Request
+ */
 module.exports.infoHash = (torrent) => {
 	const info = benCode.encode(torrent.info);
 	return crypto.createHash("sha1").update(info).digest();

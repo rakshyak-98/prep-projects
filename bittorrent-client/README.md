@@ -1,18 +1,19 @@
+Bittorrent solve the issue of the bandwidth. when one host (peer) is broadcasting and rest are watching if they require any piece one can request for that piece. The big issue with the Bittorrent is latency.
 ## Overview of bittorrent
 1. we need to send a request to **tracker**, then tracker will respond with a list of peers.
 2. we tell the tracker which file we want to download and tracker will respond with the ip address of the user that can share the file.
 
 >[INFO] Making request to tracker will add your ip address to the list that can share the file.
 
-### Bencode
+### What is Bencode?
 Bencode is a data serialization format
 
 >[!INFO] When we use data in the networking, it's best to keep them as buffers.
 
 ### What does a torrent file contains?
-A torrent file contains metadata about the files to be shared, including:
+A torrent file contains _metadata_ about the files to be shared, including:
 - Announce URL: The URL of the tracker.
-- Info Hash: A unique identifier for the torrent.
+- Info Hash: A unique identifier for the torrent. You get it from creating hash of the `torrent.info`.
 - File list: Information about the files being shared.
 
 ### How does a client find peers from torrent file?
@@ -53,8 +54,10 @@ To discover other peers in a swarm a client announces it's existence to a tracke
 - uploaded
 - compact
 
+>[!INFO Each message is a buffer with a specific format described in the [BEP](http://www.bittorrent.org/beps/bep_0015.html).]
+
 ### Connect message
-Each message is a buffer with a specific format described in the [BEP](http://www.bittorrent.org/beps/bep_0015.html).
+Initial step for initiating.
 The BEP describe the connect request as follows:
 | Offset | Size           | Name           | Value         |
 |--------|----------------|----------------|---------------|

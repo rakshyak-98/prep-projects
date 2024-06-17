@@ -8,14 +8,14 @@ module.exports.BLOCK_LEN = Math.pow(2, 14);
 
 module.exports.getPeers = (torrent, callback) => {
 	const socket = dgram.createSocket("udp4");
-	// Retrieve Tracker URL to request to get peers list.
+	// Retrieve Tracker URL to request peers list.
 	const url = torrent.announce.toString("utf-8");
 	udpSend(socket, buildConnReq(), url, callback);
 	socket.on("message", (response) => {
 		if (respType(response) === "connect") {
 			const connResp = parseConnResp(response);
 			// send announce request to tell tracker for intrusted files.
-			const announceReq = buildAnnounceReq(connResp.connectionId);
+			const announceReq = buildAnnounceReq(connResp.connectionId, torrent);
 			udpSend(socket, announceReq, url);
 		} else if (respType(response) === "announce") {
 			const announceResp = parseAnnounceResp(response);
@@ -24,6 +24,13 @@ module.exports.getPeers = (torrent, callback) => {
 	});
 };
 
+/**
+ *
+ * @param {net.Socket} socket
+ * @param {Buffer} message
+ * @param {String} rawUrl
+ * @param {Function} callback
+ */
 function udpSend(socket, message, rawUrl, callback = () => {}) {
 	const DEFAULT_HTTP_PORT = 80;
 	const url = new URL(rawUrl);

@@ -8,19 +8,15 @@ const Queue = require("./Queue");
 
 module.exports = (torrent, path) => {
 	tracker.getPeers(torrent, (peers) => {
-		try {
-			const pieces = new Pieces(torrent);
-			const file = fs.openSync(path, "w");
-			peers.forEach((peer) => download(peer, torrent, pieces, file));
-		} catch (error) {
-			console.log(error.message);
-		}
+		const pieces = new Pieces(torrent);
+		const file = fs.openSync(path, "w");
+		peers.forEach((peer) => download(peer, torrent, pieces, file));
 	});
 };
 
 function download(peer, torrent, pieces, file) {
 	const socket = new net.Socket();
-	socket.onc("error", console.log);
+	socket.on("error", console.log);
 	socket.connect(peer.port, peer.id, () => {
 		socket.write(message.buildHandshake(torrent));
 	});
