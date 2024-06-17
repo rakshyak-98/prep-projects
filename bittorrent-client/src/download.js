@@ -31,8 +31,8 @@ function onWholeMsg(socket, callback) {
 		const msgLen = () => (handshake ? saveBuf.readUInt8(0) + 49 : saveBuf.readInt32BE(0) + 4);
 		saveBuf = Buffer.concat([saveBuf, recvBuf]);
 		while (saveBuf.length >= 4 && saveBuf.length >= msgLen()) {
-			callback(saveBuf.slice(0, msgLen()));
-			saveBuf = saveBuf.slice(msgLen());
+			callback(saveBuf.subarray(0, msgLen()));
+			saveBuf = saveBuf.subarray(msgLen());
 			handshake = false;
 		}
 	});
