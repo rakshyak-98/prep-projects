@@ -32,9 +32,9 @@ module.exports.getPeers = (torrent, callback) => {
  * @param {Function} callback
  */
 function udpSend(socket, message, rawUrl, callback = () => {}) {
-	const DEFAULT_HTTP_PORT = 80;
 	const url = new URL(rawUrl);
-	socket.send(message, 0, message.length, url.port || DEFAULT_HTTP_PORT, url.hostname, callback);
+	const DEFAULT_PORT = url.protocol.includes("http") ? 80 : 6891;
+	socket.send(message, 0, message.length, url.port || DEFAULT_PORT, url.hostname, callback);
 }
 
 function respType(resp) {
@@ -121,3 +121,4 @@ function parseAnnounceResp(resp) {
 	};
 }
 
+module.exports = {buildConnReq, buildAnnounceReq};
