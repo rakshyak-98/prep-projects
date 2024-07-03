@@ -1,4 +1,7 @@
 Bittorrent solve the issue of the bandwidth. when one host (peer) is broadcasting and rest are watching if they require any piece one can request for that piece. The big issue with the Bittorrent is latency.
+
+>[!NOTE] an initial seeder is necessary to start the process of sharing a file using bittorrent protocol.
+
 ## Overview of bittorrent
 1. we need to send a request to **tracker**, then tracker will respond with a list of peers.
 2. we tell the tracker which file we want to download and tracker will respond with the ip address of the user that can share the file.
@@ -11,7 +14,7 @@ Bencode is a data serialization format
 >[!INFO] When we use data in the networking, it's best to keep them as buffers.
 
 ### What does a torrent file contains?
-A torrent file contains _metadata_ about the files to be shared, including:
+A torrent do not contain actual data but contains _metadata_ about the files to be shared, including:
 - Announce URL: The URL of the tracker.
 - Info Hash: A unique identifier for the torrent. You get it from creating hash of the `torrent.info`.
 - File list: Information about the files being shared.
@@ -22,7 +25,18 @@ A torrent file contains _metadata_ about the files to be shared, including:
 3. Receive Peer list
 
 ### What is a tracker?
-is a special type of server that assists in the communication between peers using the BitTorrent protocol. In a peer-to-peer file sharing, a software client on an end PC requests a file, and portions of the requested file residing on peer machines are sent to the client, and then reassembled into a fully copy of the requested file.
+is a special type of server that assists in the communication between peers using the BitTorrent protocol.
+- keep track of which peers have which pieces of files.
+In a peer-to-peer file sharing, a software client on an end PC requests a file, and portions of the requested file residing on peer machines are sent to the client, and then reassembled into a fully copy of the requested file.
+
+### What is peer?
+- Participants in the bittorrent network who shares part of the file with other peers.
+1. seeders: which have complete files and share with other.
+2. leechers: which are downloading the file and may not share parts they have already downloaded.
+
+### Problems with this approach.
+- Initial Seeding: The initial seed must be available to start the sharing process.
+- Peer Behavior: If too many users act as leechers and do not upload, the download speed can be affected.
 
 ### what is announce-list?
 an 'announce-list' is a key in a torrent file that specifies multiple tracker URLs. This allows clients to have a list of trackers they can use to find peers for a given torrent.
