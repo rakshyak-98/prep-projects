@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="" type="image/x-icon">
+    <title>Profile card</title>
+</head>
+
+<body>
+    <main>
+        <div class="profile-card">
+            <div class="profile-image-container">
+                <img id="profile-image" src="" />
+            </div>
+            <div class="profile-info-container">
+                <h2 id="profile-name"></h2>
+                <p id="profile-username"></p>
+            </div>
+            <div id="profile-socila-links"></div>
+            <p id="profile-description"></p>
+            <div class="button-group">
+                <button class="btn-follow">Follow</button>
+                <button class="btn-message">Message</button>
+            </div>
+        </div>
+    </main>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --clr-gray: gray;
+            --clr-pink: tomato;
+        }
+
+        img#profile-image {
+            border-radius: 100%;
+            object-position: center center;
+            width: 140px;
+            height: 140px;
+        }
+
+        .profile-card {
+            aspect-ratio: 1/1.5;
+            border-radius: 30px;
+            max-width: 400px;
+            box-shadow: 0 0 40px 4px gray;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .profile-info-container{
+            text-align: center;
+        }
+        .profile-card .profile-image-container {
+            flex-basis: 30%;
+        }
+
+        #profile-username {
+            color: var(--clr-gray);
+            font-size: 0.5rem;
+        }
+
+        #profile-name {
+            font-size: 2rem;
+        }
+
+        #profile-description {
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            flex-basis: auto;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 2rem;
+        }
+
+        button {
+            border: 1px solid;
+            border-radius: 30px;
+            padding: .5rem 2rem;
+        }
+
+        .btn-follow {
+            border-color: var(--clr-pink);
+            color: white;
+            background-color: var(--clr-pink);
+        }
+
+        .btn-message {
+            color: var(--clr-gray);
+            border: 1px solid var(--clr-gray);
+        }
+    </style>
+    <script type="module">
+        import { faker } from 'https://esm.sh/@faker-js/faker';
+        document.querySelector("link[href='']").setAttribute('href', faker.image.avatar());
+        document.querySelector("#profile-image").setAttribute('src', faker.image.avatar());
+        document.querySelector("#profile-name").textContent = faker.person.firstName().concat(" ", faker.person.lastName());
+        document.querySelector("#profile-username").textContent = "@".concat(faker.person.firstName().concat(faker.person.lastName()))
+        document.querySelector("#profile-description").textContent = faker.lorem.text();
+    </script>
+</body>
+
+</html>
