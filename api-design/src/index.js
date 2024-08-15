@@ -11,7 +11,11 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-	res.send("Hello, world!!!");
+	if (req.headers.authorization === "Basic dXNlcjpwYXNzd29yZAo=") {
+		res.send("Hello, world!!!");
+	} else {
+		res.send("Authentication failed");
+	}
 });
 
 app.listen(3000, () => {
