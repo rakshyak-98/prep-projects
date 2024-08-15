@@ -1,6 +1,6 @@
 services:
     api:
-        image: node:18-alipine
+        build: ./
         volumes:
             - .:/home/node/app
         networks:
@@ -8,7 +8,7 @@ services:
         ports:
             - 3000:3000
         working_dir: /home/node/app
-        command: node index.js
+
     mongodb:
         image: mongo:latest
         ports:
