@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
 
 function generateRandomProductList(count) {
 	return Array.from({ length: count }, () => {
@@ -22,17 +22,12 @@ const li = {
 	listStyle: "none",
 };
 
-const image = {
-	width: "100%",
-	height: "auto",
-};
-
 function productReducer(state, action) {
 	return state;
 }
 
 function lazyInit() {
-	return generateRandomProductList(10000);
+	return generateRandomProductList(100);
 }
 
 const App = () => {
@@ -41,12 +36,43 @@ const App = () => {
 		<ul style={gridView}>
 			{products.map((product) => (
 				<li style={li} key={product.id}>
-					<img style={image} src={product.picture} alt={product.name} />
+					<LazyImage style={image} src={product.picture} alt={product.name} />
 				</li>
 			))}
 		</ul>
 	);
 };
 
-export default App;
+function LazyImage({ style, src, alt }) {
+	const imageRef = useRef(null);
+	useEffect(() => {
+		const imageObserver = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					const img = imageRef.current;
+					img.src = src;
+					img.alt = alt;
+					img.style = style;
+					imageObserver.unobserve(img);
+				}
+			});
+		});
+		imageObserver.observe(imageRef.current);
+		return () => {
+			imageObserver.disconnect();
+		};
+	}, []);
+	return (
+		<img
+			ref={imageRef}
+			style={{
+				width: "100%",
+				height: "auto",
+			}}
+			src={src}
+			alt={alt}
+		/>
+	);
+}
 
+export default App;
