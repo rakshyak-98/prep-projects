@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.19.2",
     "express-rate-limit": "^7.4.0",
-    "mongoose": "^8.5.3"
+    "mongoose": "^8.5.3",
+    "mongoose-paginate-v2": "^1.8.3"
   }
 }

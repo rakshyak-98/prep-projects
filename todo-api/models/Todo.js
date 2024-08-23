@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const schema = mongoose.Schema(
 	{
@@ -12,6 +13,8 @@ const schema = mongoose.Schema(
 		timestamps: true,
 	}
 );
+
+schema.plugin(mongoosePaginate);
 
 const TodoModel = mongoose.model("Todo", schema);
 

@@ -3,9 +3,15 @@ const todoRouter = require("./routes/todo");
 const mongoose = require("mongoose");
 
 const app = express();
-mongoose.connect("mongodb://localhost:27017/todo-app").catch((error) => {
-	console.log(error);
-});
+const url = process.env.MONGODB_URI;
+mongoose
+	.connect(url)
+	.then(() => {
+		console.log("Connected to MongoDB");
+	})
+	.catch((error) => {
+		console.error(url, error);
+	});
 
 app.use(express.json());
 app.use(todoRouter);

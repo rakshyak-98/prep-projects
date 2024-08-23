@@ -5,6 +5,7 @@ const TodoModel = require("../models/Todo");
 const TEN_SECOND = 10 * 1000;
 const RATE_LIMIT = 10;
 
+// this is a rate limiter middleware
 const limiter = rateLimit({
 	windowMs: TEN_SECOND,
 	limit: RATE_LIMIT,
@@ -13,8 +14,13 @@ const limiter = rateLimit({
 todoRouter.use(limiter);
 
 todoRouter.get("/todo", async (req, res) => {
+	const { page, limit } = req.query;
+	const options = {
+		page: parseInt(page) || 1,
+		limit: parseInt(limit) || 10,
+	};
 	try {
-		const todo = await TodoModel.find();
+		const todo = await TodoModel.paginate({}, options);
 		res.status(200).json(todo);
 	} catch (error) {
 		res.status(400).send(error);
