@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
 const URI = {
 	GET_TODO: new URL("http://localhost:3000/todo"),
 	PATCH_TODO: new URL("http://localhost:3000/todo/"),
+	CREATE_TODO: new URL("http://localhost:3000/todo"),
 };
 
 function logger(message, type) {
@@ -42,9 +43,21 @@ async function updateTodoStatus(state, id) {
 	}
 }
 
+async function createTodo(todo) {
+	await fetch(URI.CREATE_TODO, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(todo),
+	});
+}
+
 function App() {
+	const todoTitleInputRef = useRef();
 	const [todo, setTodo] = useState([]);
 	const [selected, setSelected] = useState([]);
+	const [isCreating, setCreating] = useState(false);
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -92,11 +105,18 @@ function App() {
 		});
 	}
 
+	function openTodoCreate() {
+		setCreating(true);
+		console.log(todoTitleInputRef)
+	}
+
 	return (
 		<main>
 			<h1 className="todo-heading">Todo</h1>
 			<div className="todo-action">
-				<button className="todo-btn-create">Create todo</button>
+				<button className="todo-btn-create" onClick={openTodoCreate}>
+					Create todo
+				</button>
 				<button className="todo-btn-complete" onClick={markComplete}>
 					Mark complete
 				</button>
@@ -105,6 +125,14 @@ function App() {
 				</button>
 				<button className="todo-btn-delete">Delete</button>
 			</div>
+			{isCreating ? (
+				<input
+					ref={todoTitleInputRef}
+					className="new-todo-input"
+					type="text"
+					placeholder="Todo title"
+				/>
+			) : null}
 			<ul className="todo-list">
 				{selected.map((v) => {
 					return (
