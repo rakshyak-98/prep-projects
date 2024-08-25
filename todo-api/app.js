@@ -4,6 +4,11 @@ const mongoose = require("mongoose");
 
 const app = express();
 const url = process.env.MONGODB_URI;
+const logger = (req, res, next) => {
+	console.log(req.method, req.path);
+	next();
+}
+
 mongoose
 	.connect(url)
 	.then(() => {
@@ -14,8 +19,8 @@ mongoose
 	});
 
 app.use(express.json());
+app.use(logger);
 app.use(todoRouter);
-
 app.get("/", (req, res) => {
 	res.send("Health check ok");
 });

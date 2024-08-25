@@ -23,7 +23,8 @@ todoRouter.get("/todo", async (req, res) => {
 		const todo = await TodoModel.paginate({}, options);
 		res.status(200).json(todo);
 	} catch (error) {
-		res.status(400).send(error);
+		console.log("[GET todo]: ", error.message);
+		res.status(400);
 	}
 });
 
@@ -33,7 +34,8 @@ todoRouter.post("/todo", async (req, res) => {
 		const todo = await TodoModel.create(body);
 		res.status(201).send(todo);
 	} catch (error) {
-		res.send(error);
+		console.log("[POST todo]: ", error.message);
+		res.status(400);
 	}
 	return;
 });
@@ -44,7 +46,8 @@ todoRouter.get("/todo/:id", async (req, res) => {
 		const todo = await TodoModel.findById({ _id: id });
 		res.status(200).json(todo);
 	} catch (error) {
-		res.status(400).send(error);
+		console.log(`[GET todo ${id}]: `, error.message);
+		res.status(400);
 	}
 });
 
@@ -55,7 +58,8 @@ todoRouter.delete("/todo/:id", async (req, res) => {
 		res.status(204).send();
 		toggleTerminal;
 	} catch (error) {
-		res.status(400).send(error);
+		console.log(`[DELETE todo ${id}]: `, error.message);
+		res.status(400);
 	}
 });
 
@@ -66,7 +70,8 @@ todoRouter.put("/todo/:id", async (req, res) => {
 		const todo = await TodoModel.updateOne({ _id: id }, body);
 		res.status(200).json(todo);
 	} catch (error) {
-		res.status(400).send(error);
+		console.log(`[PUT todo ${id}]: `, error.message);
+		res.status(400);
 	}
 });
 
@@ -74,10 +79,11 @@ todoRouter.patch("/todo/:id", async (req, res) => {
 	const body = req.body;
 	const id = req.params.id;
 	try {
-		const newTodo = await TodoModel.findOneAndUpdate(id, body);
+		const newTodo = await TodoModel.findOneAndUpdate({_id: id}, body);
 		res.status(200).json(newTodo);
 	} catch (error) {
-		res.status(400).send(error);
+		console.log(`[PATCH todo ${id}]: `, error.message);
+		res.status(400);
 	}
 });
 
