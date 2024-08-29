@@ -5,14 +5,20 @@ const crypto = require("node:crypto");
 const benCode = require("bencode");
 const bigNum = require("bignum");
 
+/*
+* smallest distribution of file size (piece) length, 2^14 is the block size.
+* its the block size the amount of data transferred between peers.
+* minimize the chances of corruption
+*/
 module.exports.BLOCK_LEN = Math.pow(2,14);
 
 module.exports.open = (filepath) => {
 	return benCode.decode(fs.readFileSync(filepath));
 };
 
-/**
- * Generate info_hash for Tracker Connection Request
+/*
+* Generate info_hash for Tracker Connection Request.
+*  bittorrent ideal with sha1 encryption.
  */
 module.exports.infoHash = (torrent) => {
 	const info = benCode.encode(torrent.info);
