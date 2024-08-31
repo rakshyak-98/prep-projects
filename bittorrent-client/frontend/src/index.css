@@ -1,0 +1,66 @@
+:root {
+	--bg-color-card: #3e3e3e;
+	--bg-color: #1f1f1f;
+	--blue-color: #3b94ed;
+	--blue-dark-color: #1369e9;
+	--blue-light-color: #a1cee2;
+	--green-color-dark: #37ce90;
+	--green-color: #5aff4d;
+	--orange-color: #ff493a;
+	--orange-dark-color: #fe483a;
+	--pink-color: #c64187;
+	--purple-color: #584ba1;
+	--white-color: #ffffff;
+	/* combo */
+	--fail-color: var(--pink-color);
+	--bg-dashboard: var(--bg-color);
+	--light-theme: var(--white-color);
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+h1 {
+	color: var(--fail-color);
+}
+
+.dashboard {
+	color: var(--light-theme);
+	background-color: var(--bg-dashboard);
+	height: 100vh;
+}
+
+/* Dashboard */
+.dashboard-grid {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: 0.5rem 1rem;
+	grid-template-areas:
+		"servers monitoring"
+		"server-status monitoring"
+		"file-transfer-status monitoring";
+}
+
+.dashboard-grid-servers {
+	height: 20%;
+	grid-area: servers;
+	display: flex;
+	gap: 1rem;
+}
+
+.dashboard-grid-server-status {
+	height: 40%;
+	grid-area: server-status;
+}
+
+.dashboard-grid-file-transfer-status {
+	height: 40%;
+	grid-area: file-transfer-status;
+}
+
+.dashboard-grid-monitoring {
+	grid-area: monitoring;
+}
