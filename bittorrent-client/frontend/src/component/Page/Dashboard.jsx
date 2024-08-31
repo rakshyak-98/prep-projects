@@ -21,8 +21,19 @@ function Servers() {
 	);
 }
 
-function Server({ server }) {
-	return <section>{server.name}</section>;
+function Server({ server: { name, stat, lastUpTime, lastDownTime } }) {
+	return (
+		<div className="server-card">
+			<span className="server-card-server-name">{name}</span>
+			<div className="server-card-stat">
+				<img src={`/server-${stat}`} alt={`server ${stat} icon`} />
+				<span className={stat}>{stat}</span>
+			</div>
+			<span className="server-card-state-time">
+				{stat === "up" ? lastDownTime : lastUpTime}
+			</span>
+		</div>
+	);
 }
 function ServerState() {
 	return (

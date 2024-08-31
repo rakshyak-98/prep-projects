@@ -14,7 +14,13 @@
 	/* combo */
 	--fail-color: var(--pink-color);
 	--bg-dashboard: var(--bg-color);
+	--bg-server-card: var(--bg-color-card);
+	--bg-server-stat-card: var(--bg-color-card);
+	--bg-file-transfer-status-card: var(--bg-color-card);
+	--bg-monitoring-card: var(--bg-color-card);
 	--light-theme: var(--white-color);
+	--server-down-color: var(--pink-color);
+	--server-up-color: var(--green-color);
 }
 
 * {
@@ -37,6 +43,7 @@ h1 {
 .dashboard-grid {
 	display: grid;
 	grid-template-columns: 1fr auto;
+	grid-template-rows: auto 1fr 1fr;
 	gap: 0.5rem 1rem;
 	grid-template-areas:
 		"servers monitoring"
@@ -45,22 +52,63 @@ h1 {
 }
 
 .dashboard-grid-servers {
-	height: 20%;
+	height: max-content;
 	grid-area: servers;
 	display: flex;
 	gap: 1rem;
 }
 
 .dashboard-grid-server-status {
-	height: 40%;
 	grid-area: server-status;
 }
 
 .dashboard-grid-file-transfer-status {
-	height: 40%;
 	grid-area: file-transfer-status;
 }
 
 .dashboard-grid-monitoring {
 	grid-area: monitoring;
 }
+
+.dashboard [class$="card"] {
+	border-radius: 4px;
+	padding: 1rem;
+}
+
+.dashboard-grid-server-status,
+.dashboard-grid-file-transfer-status,
+.dashboard-grid-monitoring {
+	background-color: var(--bg-file-transfer-status-card);
+	border-radius: 4px;
+}
+
+/* server */
+.server-card {
+	flex-basis: 100%;
+	background-color: var(--bg-server-card);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.server-card-stat {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	text-transform: capitalize;
+	align-items: center;
+}
+
+.server-card-stat .down {
+	color: var(--server-down-color);
+}
+.server-card-stat .up {
+	color: var(--server-up-color);
+}
+
+.server-card img {
+	width: 100%;
+}
+
+/* server stat */
