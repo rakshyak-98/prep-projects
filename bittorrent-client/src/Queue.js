@@ -1,6 +1,6 @@
 "use strict";
 
-const tp = require("./torrent-parser");
+cocurl -L -R -O https://www.lua.org/ftp/lua-5.4.7.tar.gznst tp = require("./torrent-parser");
 
 module.exports = class {
 	constructor(torrent) {
