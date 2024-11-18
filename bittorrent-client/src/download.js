@@ -28,7 +28,8 @@ function onWholeMsg(socket, callback) {
 	let saveBuf = Buffer.alloc(0);
 	let handshake = true;
 	socket.on("data", (recvBuf) => {
-		const msgLen = () => (handshake ? saveBuf.readUInt8(0) + 49 : saveBuf.readInt32BE(0) + 4);
+		const msgLen = () =>
+			handshake ? saveBuf.readUInt8(0) + 49 : saveBuf.readInt32BE(0) + 4;
 		saveBuf = Buffer.concat([saveBuf, recvBuf]);
 		while (saveBuf.length >= 4 && saveBuf.length >= msgLen()) {
 			callback(saveBuf.subarray(0, msgLen()));
@@ -47,13 +48,15 @@ function msgHandler(msg, socket, pieces, queue, file) {
 		if (m.id === 1) unChokeHandler(socket);
 		if (m.id === 4) haveHandler(m.payload, socket, pieces, queue, m.payload);
 		if (m.id === 5) bitFieldHandler(socket, pieces, queue, m.payload);
-		if (m.id === 7) pieceHandler(m.payload, socket, pieces, queue, torrent, file);
+		if (m.id === 7)
+			pieceHandler(m.payload, socket, pieces, queue, torrent, file);
 	}
 }
 
 function isHandshake(msg) {
 	return (
-		msg.length === msg.readUInt8(0) + 49 && msg.toString("utf-8", 1) === "BitTorrent protocol"
+		msg.length === msg.readUInt8(0) + 49 &&
+		msg.toString("utf-8", 1) === "BitTorrent protocol"
 	);
 }
 
@@ -132,10 +135,19 @@ function bitFieldHandler(socket, pieces, queue, payload) {
  * @param {String} file
  * @returns
  */
-function pieceHandler(payload, socket, pieces, queue, torrent, file, pieceResp) {
+function pieceHandler(
+	payload,
+	socket,
+	pieces,
+	queue,
+	torrent,
+	file,
+	pieceResp
+) {
 	pieces.printPercentDone();
 	pieces.addReceived(pieceResp);
-	const offset = pieceResp.index * torrent.info["piece length"] + pieceResp.begin;
+	const offset =
+		pieceResp.index * torrent.info["piece length"] + pieceResp.begin;
 	fs.write(file, pieceResp.block, 0, pieceResp.block.length, offset, () => {});
 	if (pieces.isDone()) {
 		console.log("Connection end");
@@ -160,4 +172,3 @@ function requestPiece(socket, pieces, queue) {
 		}
 	}
 }
-

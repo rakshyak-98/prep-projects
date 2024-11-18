@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 const download = require("./src/download");
 const torrentParser = require("./src/torrent-parser");
